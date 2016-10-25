@@ -1,0 +1,34 @@
+<style>
+    .typegroup {
+        border: 1px solid #eee;
+        margin: 0.5em;
+        padding: 0.5em;
+    }
+    .typeheader{
+        font-size:110%;
+        font-weight:600;
+    }
+    .producttypegroup{
+        padding:0;
+        margin:0;
+        list-style:none;
+        clear:both;
+    }
+    .productnameitem{
+        float:left;
+        margin-left:1em;
+    }
+</style>
+<div class="row col-md-12">
+    <h4>产品列表</h4>
+    <div class="col-md-3" style="position:absolute;right:-.5em;top:0.5em;width: 40%;"><input type="text" placeholder="输入产品名称、价格、拼音首字母查询" ng-change="filterproduct()" class="form-control" ng-model="filtertext"/></div>
+    <div class="col-md-12 typegroup" ng-repeat="type in producttypes" ng-if="hasProduct(type)">
+        <div class="typeheader"><input class="typeitem" type="checkbox" ng-model="type.$isselected" ng-change="typeselect(type)">{{type.name}}</div>
+        <ul class="producttypegroup">
+            <li ng-repeat="product in resultproducts|filter:{producttype1:type.name}" class="productnameitem">
+                <input type="checkbox" ng-model="product.$isselected" ng-change="getselect()" ng-if="mode=='multiselect'" />
+                {{product.productname}}
+            </li>
+        </ul>
+    </div>
+</div>

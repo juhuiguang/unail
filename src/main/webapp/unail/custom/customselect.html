@@ -1,0 +1,27 @@
+<md-autocomplete
+        ng-disabled="userselect.isDisabled"
+        md-no-cache="userselect.noCache"
+        md-selected-item="userselect.selectedItem"
+        md-search-text-change="userselect.searchTextChange(userselect.searchText)"
+        md-search-text="userselect.searchText"
+        md-selected-item-change="userselect.selectedItemChange(item)"
+        md-delay="500"
+        md-items="item in userselect.querySearch(userselect.searchText)"
+        md-item-text="item.customname"
+        md-min-length="0"
+        placeholder="请选择用户"
+        md-menu-class="autocomplete-custom-template">
+    <md-item-template>
+                  <span class="item-title">
+                    <span> {{item.customname}} </span>
+                  </span>
+                  <span class="item-metadata">
+                    <span class="item-metastat">
+                      <strong>{{item.customphone}}</strong>
+                    </span>
+                  </span>
+    </md-item-template>
+    <md-not-found>
+        没有找到用户.<button class="btn btn-sm btn-default" ng-click="clickAddCustom()">添加新用户</button>
+    </md-not-found>
+</md-autocomplete>

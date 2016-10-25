@@ -1,0 +1,81 @@
+<style>
+	.navbar-default.shop {            
+    	margin-top: -1.8%;    
+	    background-color: #F5F7FA;
+	    border-color: #F5F7FA;
+	}
+    .btn.btn-default.shop {  
+    	margin-top: 10px; 
+    } 
+   .table.shops > tbody > tr > td,.table > thead:first-child > tr:first-child > th { 
+        text-align:center;  
+		vertical-align: middle;
+   }
+	table.shops .btn-sm {    
+		border-color: #F5F4F4;
+	} 
+	table.shops .btn-sm.del {
+		color: rgb(255,64,129);
+	}
+	table.shops .btn-sm.del:hover {
+		border-color: #FFE1E1;
+    	background-color: #FFF7F7;
+	}       
+	table.shops .btn-sm.upd {
+		color: rgb(22, 178, 255);
+	}
+	table.shops .btn-sm.upd:hover {
+		border-color: #E1EBFF;
+    	background-color: #F6FCFF; 
+	}
+</style>   
+
+<h3>{{title}}</h3>    
+<nav class="navbar navbar-default shop">   
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">          
+      <button class="btn btn-default shop add" ng-click="addshop()"><span class="btn-label"><i class="fa fa-plus"></i></span> 新增门店 </button>   
+      <button class="btn btn-default shop del" ng-click="deleteshops()"><span class="btn-label"><i class="fa fa-minus"></i></span> 删除所选门店 </button>    
+    </div>                      
+     <ul class="nav navbar-nav navbar-right search">
+	    <form class="navbar-form navbar-left" role="search">      
+	       <div class="form-group"> 
+	         <input type="text" class="form-control" placeholder="门店名称搜索" ng-model="searchkey">
+	       </div>
+	       <button type="submit" class="btn btn-default" ng-click="searchshop(searchkey)">搜  索</button>   
+	     </form>
+	  </ul>
+
+  </div>
+</nav>
+
+<table class="table table-striped shops">    
+	<thead>  
+		<tr>
+			<th><input type="checkbox" ng-model="$isselectall" ng-click="selectall($value)"/></th>
+		    <th>门店名称</th>
+		    <th>门店地址</th> 
+		    <th>门店编号</th>     
+		    <th>创建日期</th>              
+		    <th>门店电话1</th>
+			<th>门店电话2</th>
+			<th>操作</th>    
+		</tr>
+	</thead>
+	<tbody>
+        <tr ng-repeat="shop in shops">
+          <td><input type="checkbox" sno="{{shop.shopNo}}" ng-model="shop.$isselected" /></td>
+          <td>{{shop.shopName}}</td>  
+          <td data-toggle="tooltip" data-placement="left" title="{{shop.shopAddrall}}">{{shop.shopAddr}}</td>          
+          <td>{{shop.shopcode}}</td>          
+          <td>{{shop.shoptime|date : 'yyyy-MM-dd'}}</td>             
+          <td>{{shop.shopPhone1}}</td>   
+          <td>{{shop.shopPhone2}}</td>            
+          <td>
+          	<a class="btn btn-default btn-sm upd" ng-click="updateshop(shop)">修改</a>                      
+          	<a class="btn btn-default btn-sm del" ng-click="deleteshop(shop.shopNo)">删除</a>
+          </td> 
+        </tr>
+      </tbody>      
+</table> 

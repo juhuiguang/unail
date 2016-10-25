@@ -1,0 +1,79 @@
+<md-dialog style="width:56%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h4>出售卡片:</h4>
+            <h4 class="">
+                总金额：{{price}}，
+                已结算金额：{{dealprice+cash}}，
+                剩余金额：{{remainprice}}
+            </h4>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <form name="cardform" novalidate>
+            <div class="list-group">
+               <div class="list-group-item" ng-if="cardkind==null">
+                   <label>选择卡种</label>
+                   <select ng-model="selectcardkindno" ng-change="setCurrentCardkind(selectcardkindno)" class="form-control" required>
+                       <option ng-repeat="kind in cardkinds" value="{{kind.cardkindno}}">{{kind.cardkindname}}</option>
+                   </select>
+               </div>
+                <div class="list-group-item">
+                    <label>当前卡种:{{cardkind.cardkindname}}</label>
+                </div>
+                <div class="list-group-item">
+                    <label>卡号:{{cardkind.cardnumberprefix}}-{{cardseq}}</label>
+                    <input class="form-control" placeholder="请输入卡号尾号" type="number" ng-model="cardseq" required/>
+                    <button class="form-control btn-sm btn btn-warning" ng-click="newcardseq()">生成卡号</button>
+                </div>
+                <div class="list-group-item">
+                    <label>卡片有效期</label>
+                    <input class="form-control" type="date" ng-model="cardduetime" value='{{cardkind.cardkindduetime|date:"yyyy-MM-dd"}}' />
+                </div>
+                <div class="list-group-item">
+                    <label>选择用户:</label>
+                    <select-custom selectcustom="custom"></select-custom>
+                </div>
+                <div class="list-group-item" ng-if="custom!=null&&cardkind.cardkindtype!='充值卡'">
+                    <label>卡券结算</label>
+                    <div class="table-responsive">
+                        <table class="table-bordered table" style="margin-bottom:0;">
+                            <tr>
+                                <td>卡号</td>
+                                <td>卡片余额</td>
+                                <td>扣除金额</td>
+                                <td>使用</td>
+                            </tr>
+                            <tr ng-repeat="card in customcards">
+                                <td>{{card.cardno}}</td>
+                                <td>{{card.surplussales}}元</td>
+
+                                <td>{{card.dealprice}}元</td>
+                                <td>
+                                    <button class="btn btn-success" ng-if="!card.$isused" ng-click="useCard(card)"
+                                            ng-disabled="false">
+                                        使用
+                                    </button>
+                                    <button class="btn btn-warning" ng-if="card.$isused" ng-click="unuseCard(card)">取消</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="list-group-item">
+                    <label>现金部分:</label>
+                    <input class="form-control" type="number" value="0" min="0" ng-model="cash" placeholder="请输入现金金额" ng-change="calc()"/>
+                </div>
+
+            </div>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <button class="btn-success btn" ng-disabled="cardform.$invalid||custom==null||remainprice>0" ng-click="save()">保存</button>
+        <button class="btn-danger btn" ng-click="cancel()">取消</button>
+    </md-dialog-actions>
+</md-dialog>

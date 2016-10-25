@@ -1,0 +1,63 @@
+<style>
+	.table.producttypes > tbody > tr > td,.table.producttypes > thead:first-child > tr:first-child > th { 
+        text-align:center;  
+		vertical-align: middle;
+   }
+	table.producttypes .btn-sm {    
+		border-color: #F5F4F4;
+	} 
+	table.producttypes .btn-sm.del {
+		color: rgb(255,64,129);           
+	}
+	table.producttypes .btn-sm.del:hover {
+		border-color: #FFE1E1;
+    	background-color: #FFF7F7;
+	}       
+	table.producttypes .btn-sm.upd {
+	    color: rgb(22, 178, 255);
+	}
+	table.producttypes .btn-sm.upd:hover {
+		border-color: #E1EBFF;
+    	background-color: #F6FCFF; 
+	}
+</style>
+<div class="modal-header">
+    <h3 class="modal-title"> 维护产品类型 </h3>
+</div>
+<div class="modal-body">
+	<table class="table table-striped producttypes">    
+		<thead>       
+			<tr>
+			    <th>产品类型名</th>
+				<th>操作</th>   
+			</tr>
+		</thead>
+		<tbody>
+	        <tr ng-repeat="ptype in ptypes">
+	          <td>{{ptype.name}}</td>   
+	          <td>
+	     <!--  <a class="btn btn-default btn-sm upd" ng-click="updateproducttype(ptype)">修改</a>        -->               
+	          	<a class="btn btn-default btn-sm del" ng-click="deleteproducttype(ptype.no)">删除</a>
+	          </td> 
+	        </tr>
+	    	<tr ng-if="$showaddptype">         
+	    		<td colspan="2">
+				    <div class="input-group">
+	    				<input type="text" placeholder="产品类型名称" class="form-control" ng-model="ptypename" required />
+				      	<span class="input-group-btn"> 
+				        	<button class="btn btn-default" ng-click="addProductType(ptypename)" type="button"> 添  加 </button>
+				      	</span>   
+				    </div>
+	    		</td>
+	    	</tr>               
+	        <tr>
+	        	<td colspan="2">
+	        		<span class="btn-label" ng-click="showdddproducttype()"><i class="fa fa-plus"></i></span>
+	        	</td>
+	        </tr>               
+	      </tbody>      
+	</table>
+</div>
+<div class="modal-footer">
+    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">关  闭</button>
+</div>

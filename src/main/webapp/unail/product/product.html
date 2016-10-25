@@ -1,0 +1,71 @@
+<style>
+
+</style>
+<h3>产品管理</h3>
+<div class="row">
+    <div class="col-md-8">
+        <button class="btn btn-labeled btn-success" type="button" ng-click="vm.showAdd()">
+            <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>
+            新增产品
+        </button>
+        <button class="btn btn-labeled btn-danger" type="button" ng-click="vm.deleteProduct()">
+            <span class="btn-label">
+                <i class="fa fa-minus"></i>
+            </span>
+            删除产品
+        </button>
+    </div>
+    <div class="col-md-3 col-md-offset-1">
+        <div class="input-group">
+            <input type="text" class="form-control" id="srch_name" placeholder="输入产品名称查询" ng-model="vm.currentkeywords">
+            <div class="input-group-addon" ng-click="vm.getProducts(vm.currentkeywords)"><span class="fa fa-search"></span></div>
+        </div>
+    </div>
+</div>
+<div ng-if="vm.alertflag=='show'" class="alert" role="alert">
+    <uib-alert type="{{$parent.vm.alert.type}}" dismiss-on-timeout="2000" close="$parent.vm.alertflag='hide'">{{$parent.$parent.vm.alert.msg}}</uib-alert>
+</div>
+<div class="row">
+    <ul id="producttypepnl" class="btn-group col-md-12">
+        <li ng-repeat="type in vm.producttypes" class="mb-sm btn btn-default" ng-class="{active:type.$isselected}" ng-click="vm.loadtypeproduct(type)">
+          {{type.name}}
+        </li>
+		<button class="btn btn-default" ng-click="vm.operateProductType()"><span class="btn-label"><i class="fa fa-cog"></i></span> 类型维护 </button>    
+    </ul>   
+	
+</div>
+<div class=" table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="gridselectall" ng-model="vm.$isselectall" ng-click="vm.selectall($value)"/></th>
+                    <th>产品编号</th>
+                    <th>产品名称</th>
+                    <th>产品类型1</th>
+                    <th>产品原价</th>
+                    <th>产品现价</th>
+                    <th>计价单位</th>
+                    <th>产品规格</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="p in vm.products">
+                    <td>
+                        <input type="checkbox" pno="{{p.productno}}" ng-model="p.$isselected" />
+                    </td>
+                    <td>{{ p.productno }}</td>
+                    <td>{{ p.productname }}</td>
+                    <td>{{ p.producttype1 }}</td>
+                    <td>{{ p.productprice1 }}</td>
+                    <td>{{ p.productprice2 }}</td>
+                    <td>{{ p.productunit }}</td>
+                    <td>{{ p.productcount }}</td>
+                    <td><a class="btn btn-default btn-sm" ng-click="vm.showUpdate(p)">修改</a></td>
+                </tr>
+                </tbody>
+            </table>
+</div>
+

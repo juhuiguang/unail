@@ -1,0 +1,77 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{ModTitle}}</h3>
+</div>
+<div class="modal-body"> 
+	<form role="form" name="addCusform" class="form-horizontal" novalidate="novalidate">      
+	  <div class="form-group">
+	    <label class="col-sm-3 control-label">客户姓名</label> 
+	    <div class="col-sm-7">    
+	      <input name="cusname" id="input-name" type="text" placeholder="请输入客户姓名" class="form-control" ng-model="form.customname" required />
+	    </div>     
+	  </div>
+	  
+	  <div class="form-group">
+         <label class="col-sm-3 control-label">客户电话</label>
+         <div class="col-sm-7">
+           	<input name="cusphone" id="input-phone" type="tel" placeholder="请输入客户电话" class="form-control" ng-model="form.customphone" required />
+       	 </div>
+       </div>
+       
+       <div class="form-group">
+         <label class="col-sm-3 control-label">出生日期</label>
+         <div class="col-sm-7">
+           	<input name="cusphone" id="input-birthday" type="text" placeholder="XXXX-XX-XX 或 XXXX/XX/XX" class="form-control" ng-model="form.custombirthday" />
+       	 </div>
+       </div>
+
+       <div class="form-group">
+            <label class="col-sm-3 control-label">客户年龄</label>
+            <div class="col-sm-7">
+            	<input name="cusage" id="input-age" type="number" placeholder="请输入客户年龄" class="form-control" ng-model="form.customage" />
+        	</div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属区域</label>
+            <div class="col-sm-7">
+            	<input name="cusarea" id="input-area" type="text" placeholder="请输入客户所属区域" class="form-control" ng-model="form.customarea" />
+        	</div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">首次到店时间</label>
+            <div class="col-sm-7">
+            	<md-datepicker ng-model="form.firstconsumetime"  md-placeholder="请选择日期" md-open-on-focus></md-datepicker>	      		
+<!--           <input name="cusfirsttime" id="input-firsttime" type="date" placeholder="请输入首次到店时间" class="form-control" ng-model="form.firstconsumetime" required />
+ -->        	</div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">最近消费时间</label>   
+            <div class="col-sm-7">
+                <md-datepicker ng-model="form.latelyconsumetime"  md-placeholder="请选择日期" md-open-on-focus></md-datepicker>	      		
+<!--           <input name="cuslatelytime" id="input-latelytime" type="date" placeholder="请输入首次到店时间" class="form-control" ng-model="form.latelyconsumetime" required />
+ -->        	</div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">VIP 客户</label>
+            <div class="col-sm-7"> 
+            	<label class="radio-inline"> 
+				  <input type="radio" name="cusifvip" id="radio-ifvipN" ng-click="hidevip()" value="否" ng-model="form.ifvip"> 否
+				</label>
+            	<label class="radio-inline">
+				  <input type="radio" name="cusifvip" id="radio-ifvipY" ng-click="showvip()" value="是" ng-model="form.ifvip"> 是     
+				</label>
+        	</div>       
+        </div>
+        
+        <div class="form-group" ng-if="form.$showvipitem">
+            <label class="col-sm-3 control-label">VIP 客户卡号</label>
+            <div class="col-sm-7">
+            	<input name="cusvipcardno" id="input-vipcardno" type="text" placeholder="请输入VIP 客户卡号" class="form-control" ng-model="form.vipcardno" required />
+        	</div>
+        </div>
+        
+	</form>
+</div>
+<div class="modal-footer">
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addCusform.$invalid" ng-click="save(addCusform)">保存</button>
+    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
+</div>  

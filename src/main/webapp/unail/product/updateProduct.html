@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h3 class="modal-title">修改产品</h3>
+</div>
+<div class="modal-body">
+    <form role="form"  name="addform" novalidate="novalidate">
+        <div class="form-group col-md-12">
+            <label>产品名称</label>
+            <input name="productname" id="input-pname" type="text" placeholder="请输入产品名称" class="form-control" ng-model="form.productname" required />
+        </div>
+        <div class="form-group col-md-12">
+            <label>选择产品类型</label>
+            <select id="select-ptype1" name="producttype1" class="form-control" ng-model="form.producttype1" required >
+                <option ng-repeat="type in producttypes" value="{{type.name}}">{{type.name}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-12">
+            <label>产品描述</label>
+            <textarea name="productdesc" id="input-desc" placeholder="请输入产品描述" class="form-control" ng-model="form.productdecs"></textarea>
+        </div>
+        <div class="form-group col-md-3">
+                <label>产品原价</label>
+                <input name="price1" id="input-price1" type="number" placeholder="产品原价" class="form-control" ng-model="form.productprice1" required />
+            </div>
+        <div class="form-group col-md-3">
+                <label>产品现价</label>
+                <input name="price2" id="input-price2" type="number" placeholder="产品现价" class="form-control" ng-model="form.productprice2" required />
+
+        </div>
+        <div class="form-group col-md-3">
+            <label>计价单位</label>
+            <input id="input-unit" type="text" placeholder="次/件/套" class="form-control" ng-model="form.productunit"/>
+        </div>
+        <div class="form-group col-md-3">
+            <label>产品规格</label>
+            <input id="input-count" type="text" placeholder="12次" class="form-control" ng-model="form.productcount"/>
+        </div>
+
+        <div  class="form-group col-md-12">
+            <label>选择适用门店</label>
+            <shop-list shops="shops" usershop="ALL" mode="multiselect"></shop-list>
+            <div style="clear:both;"></div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>门店</th>
+                        <th>原价</th>
+                        <th>现价</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="shop in shops|filter:{$isselected: true}">
+                        <td>{{shop.shopName}}</td>
+                        <td><input class="form-control"  type="number" placeholder="{{shop.price1}}" ng-model="shop.price1"/></td>
+                        <td><input class="form-control"  type="number" placeholder="{{shop.price2}}" ng-model="shop.price2"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addform.$invalid" ng-click="update()">保存</button>
+    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
+</div>

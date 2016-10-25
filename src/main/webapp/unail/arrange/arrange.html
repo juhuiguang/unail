@@ -1,0 +1,189 @@
+<style>
+	.navbar-default.arrange {             
+	    background-color: #F5F7FA;
+	    border-color: #F5F7FA;
+	    min-height: 0px;
+	}
+	#WeekSheetTable .item.logo{
+		color: #FFFFFF;
+	    letter-spacing: 1px;
+	    font-family: cursive;
+	    background-color: #D0E7F1;
+	    font-weight: 600;
+	    text-align:center;
+	}
+	#WeekSheet{
+		overflow-y:auto;
+		width:100%;
+		background:#fff;
+		position:relative;
+	}
+	#WeekSheetTable{
+		width:100%;
+	}
+	#WeekSheetTable tr{
+		min-height:30px;
+	}
+	#WeekSheetTable tr td{
+		border:1px solid #eeece8;
+		width:12.4%;
+		min-height:40px !important;
+		vertical-align: top !important;
+	}
+	#WeekSheetTable tr .leftTd,#WeekSheetTable tr .leftTd:hover{
+		text-align:center;
+		background:#F5F7FA;
+		border: 1px solid #FFFFFF;
+		color:#777;
+		line-height:35px;
+		font-weight: 800;
+		font-size: small;
+	    font-family: cursive;
+	}
+	.navbar-header.arrange {
+		width: 100%;
+	}
+	.form-group .control-label.arrangesign,.form-group .control-label.arrangerange {
+		font-size: small;
+	}
+	.form-group .control-label.arrangerange {
+	    margin-left: 15px;
+	}  
+	.form-group .control-label.arrangedate {
+	    margin-left: -50px;
+	}
+	.form-group .control-label.arrangedate span {
+		font-size: small;
+	    font-family: cursive;
+	}
+	.form-group .control-label.arrangedate .btn-label {
+		color: #AFAFAF;
+    	cursor: pointer;
+	}
+	.form-group .control-label.arrangedate .btn-label:hover {
+		color: #000;
+		font-size: 1.31rem;
+	}
+	.form-group .control-label.arrangedate .leftbtn {
+		margin-right: 20px;
+	}
+	.form-group .control-label.arrangedate .rightbtn {
+		margin-left: 20px;
+	}
+	.startTlabel {
+		margin-right: 15px;
+	}
+	.endTlabel {
+		margin-left: 15px;	
+	}
+	.arrange-phone {
+		float: right;
+    	margin-right: 18px;
+	}
+	.arrangeTd:hover {
+		cursor: pointer;
+		background-color: hsla(216, 33%, 97%, 0.69);
+	}
+	.weekdate {
+		font-weight: 500;
+    	font-family: -webkit-pictograph;
+    	display: block;
+    	margin-top: -14px; 
+	}
+	.arrange-cus-list {
+		margin-bottom: 4px;
+		background-color: rgb(239, 245, 247);
+	    margin-top: 4px; 
+	    width: 96%;
+	    margin-left: 2%;
+		padding: 5px 15px;
+	}
+	.arrange-cus-list span {
+	    font-weight: 600;
+    	font-family: sans-serif;   
+    } 
+    span.delbtn {
+    	float: right;
+	    font-size: 10px;
+	    color: rgb(255, 140, 179);
+    }
+    span.delbtn:hover {
+        color: #ffffff;
+	    background: rgb(255, 140, 179);
+	    border-radius: 10px;
+	    height: 18px;
+	    width: 18px;
+	    padding-top: 0.4px;
+	    padding-left: 4.2px;
+	    margin-right: -5px;
+    }
+    .row.shoplist {
+		margin-left: -38px;
+		margin-bottom: 15px;
+	}
+</style>
+
+<h3>{{title}}</h3>
+
+<div class="row shoplist" ng-if="purview">
+	<ul>
+	    <li class="mb-sm btn btn-default" ng-click="clickShopItem('all')">全部</li>
+	    <li ng-repeat="shop in shops" class="mb-sm btn btn-default" ng-click="clickShopItem(shop)">{{shop.shopName}}</li>
+	</ul>
+</div>    
+
+<nav class="navbar navbar-default arrange">   
+  <div class="container-fluid">
+    <div class="navbar-header arrange">          
+      <form role="form" name="searchArrform" class="form-horizontal" novalidate="novalidate">    
+	      <div class="form-group">
+	      		<label class="col-sm-4 control-label arrangesign">可选择任意日期，查询此日期所在周的客户预约信息：</label>
+	      		<div class="col-sm-3">
+					<md-datepicker ng-model="selecttime"  md-placeholder="请选择查看的日期" md-open-on-focus></md-datepicker>	      		
+	        	</div>
+	        	<div class="col-sm-1 arrange-phone">    
+	        		<button class="btn btn-default" ng-click="addArrange()"><span class="btn-label"><i class="fa fa-phone alt"></i></span> 预 约 </button>     
+	        	</div>
+	      </div>
+	      <div class="form-group">
+	      		<label class="col-sm-2 control-label arrangerange">所选日期所在的周范围：</label>
+	        	<label class="col-sm-4 control-label arrangedate">
+	        		<span class="btn-label leftbtn" ng-click="lastWeek()"><i class="fa fa-backward"></i></span>
+	        		<span class="startTlabel">  {{startTime|date : 'yyyy-MM-dd'}}  </span>至<span class="endTlabel">  {{endTime|date : 'yyyy-MM-dd'}}  </span>
+	        		<span class="btn-label rightbtn" ng-click="nextWeek()"><i class="fa fa-forward"></i></span>
+	        	</label>     
+	      </div>
+      </form>
+    </div> 
+  </div>
+</nav>
+
+<div id="WeekSheet">
+	<!-- table -->
+	<table id="WeekSheetTable">
+	  <thead>
+	  	<tr>
+		  	<th class = "item logo"> UMISSION </th>
+		  	<th class = "leftTd" ng-repeat="day in days">
+				<div>{{day.weekname}}<span class="weekdate">{{day.date.getMonth()+1}}月{{day.date.getDate()}}日</span></div>
+			</th>
+	  	</tr>
+	  </thead>
+	  <tbody>
+	    <tr ng-repeat="time in worktimes">
+	       <td class = "leftTd"> {{time}} </td>
+	       <td class="arrangeTd" ng-repeat="day in days" ng-click="addArrange(day.date,time)">
+			   <div ng-repeat="arrange in arrangearry |filter:{arrangeshop:currentshop}" ng-if="time==arrange.timestr&&day.datestr==arrange.datestr">
+			   		<div class="arrange-cus-list" ng-click="showarrange(arrange)">
+						<span>{{arrange.customname}} </span>
+						<span class="btn-label delbtn" ng-click="deletearrange(arrange.arrangeno)"><i class="fa fa-remove"></i></span>	 
+
+					</div>
+			   </div>
+		   </td>
+	    </tr>
+
+	  </tbody>
+	</table>
+	<!-- table end -->
+</div>

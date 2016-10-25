@@ -1,0 +1,50 @@
+<style>
+    .md-headline.cardkind {
+        min-height: 96px;
+    }
+</style>
+<h3>卡券销售</h3>
+
+<div class="row">
+    <ul  class="btn-group col-md-10">
+        <li class="mb-sm btn btn-default" ng-class="{active:alltype}" ng-click="loadallcardkind(type)">
+            全部
+        </li>
+        <li ng-repeat="type in cardkindtypes" class="mb-sm btn btn-default" ng-class="{active:type.$isselected}" ng-click="loadtypecardkind(type)">
+            {{type.name}}
+        </li>
+
+    </ul>
+    <div class="col-md-2"><input type="text" placeholder="请输入关键字查询" ng-model="srchtext" /></div>
+
+</div>
+<div ng-if="alertflag=='show'" class="alert" role="alert">
+    <uib-alert type="{{$parent.alert.type}}" dismiss-on-timeout="2000" close="$parent.alertflag='hide'">{{$parent.$parent.alert.msg}}</uib-alert>
+</div>
+<div class="row">
+    <div class="col-md-3" ng-repeat="cardkind in cardkinds |filter:srchtext">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text style="position:relative;">
+                    <span class="md-headline cardkind" style="margin-right:2em;">{{cardkind.cardkindname}}</span>
+                    <span class="md-subhead">{{cardkind.cardkindtype}} | {{cardkind.balancetype}}</span>
+
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="list-group">
+                    <div class="list-group-item">卡销售金额：{{cardkind.cardkindsales}}</div>
+                    <div class="list-group-item">卡截止时间：{{cardkind.cardkindduetime |date:"yyyy-MM-dd"}}</div>
+                    <div class="list-group-item">卡券数量：{{cardkind.cardcount}}</div>
+                </div>
+            </md-card-content>
+
+            <md-card-actions>
+                <button class="btn btn-sm btn-success " ng-click="salecard(cardkind)" style="margin-bottom:0.5em;margin-left:1em;float:left;" ng-disabled="cardkind.cardkindstatus==0">
+                    <i class="fa fa-credit-card"></i>
+                    销售卡片
+                </button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>

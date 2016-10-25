@@ -1,0 +1,26 @@
+<style>
+    .shoplist{
+        padding:0;
+        margin:0;
+        width:100%;
+        list-style:none;
+    }
+    .shoplist .shop_sel_all{
+        width: 100%;
+        margin-bottom: 5px;
+        text-align: right;
+    }
+
+</style>
+<ul class="shoplist">
+    <div class="shop_sel_all" ng-if="mode=='multiselect'" >
+        <input id="shop_all" type="checkbox" ng-model="selectall" ng-change="selectall?selectAll():deselect();"/>
+        <label for="shop_all">选择全部</label>
+    </div>
+    <li class="shopitem col-md-3" ng-repeat="shopitem in shops">
+        <input id="input_shop_{{shopitem.shopNo}}" ng-if="mode=='multiselect'" ng-model="shopitem.$isselected" type="checkbox"/>
+        <input id="input_shop_{{shopitem.shopNo}}" name="single_shop" ng-model="shopitem.$isselected" value=true ng-change="radiochange(shopitem)" ng-if="mode=='singleselect'"  type="radio" />
+        <label for="input_shop_{{shopitem.shopNo}}">{{shopitem.shopName}}</label>     
+    </li>
+
+</ul>

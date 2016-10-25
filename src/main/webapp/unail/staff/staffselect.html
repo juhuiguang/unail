@@ -1,0 +1,27 @@
+<md-autocomplete
+	ng-disabled="staffselect.isDisabled"
+	md-no-cache="staffselect.noCache"
+	md-selected-item="staffselect.selectedItem"
+	md-search-text-change="staffselect.searchTextChange(staffselect.searchText)"
+	md-search-text="staffselect.searchText"
+	md-selected-item-change="staffselect.selectedItemChange(item)"
+	md-delay="500"
+	md-items="item in staffselect.querySearch(staffselect.searchText)"
+	md-item-text="item.staffname"
+	md-min-length="0"
+	placeholder="请选择员工"
+	md-menu-class="autocomplete-staff-template">
+	<md-item-template>
+		<span class="item-title">
+			<span> {{item.staffname}} </span>
+		</span>
+		<span class="item-metadata">
+			<span class="item-metastat">
+				<strong> {{item.staffno}} </strong>
+			</span>
+		</span>
+	</md-item-template>
+	<md-not-found>
+		没有找到员工
+	</md-not-found>
+</md-autocomplete>

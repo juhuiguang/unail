@@ -1,0 +1,138 @@
+<style>
+    .popselect{
+        position:absolute;
+        width:90%;
+        max-height:70%;
+        overflow-y: auto;
+        top:30%;
+        left:5%;
+    }
+</style>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h4>{{form.title}}</h4>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <form role="form"  name="addform" novalidate="novalidate" style="margin-top:0.5em;" class="md-dialog-content">
+            <div class="form-group col-md-12">
+                <label>卡种类型</label>
+                <select class="dropdown form-control"   ng-model="form.cardkindtype">
+                    <option ng-repeat="type in cardkindtypes" value="{{type.name}}">{{type.name}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label>卡种名称</label>
+                <input name="cardkindname" id="input-cardkindname" type="text" placeholder="请输入卡种名称" class="form-control" ng-model="form.cardkindname" required />
+            </div>
+            <div class="form-group col-md-12">
+                <label>卡种描述</label>
+                <textarea name="cardkinddesc" id="input-cardkinddesc" type="text" placeholder="请输入卡种描述" class="form-control" ng-model="form.cardkinddesc" />
+            </div>
+            <div class="form-group col-md-12">
+                <label>卡种截止日期</label>
+                <md-datepicker ng-model="form.cardkindduetime" md-placeholder="请输入卡种截止日期" required></md-datepicker>
+                <!--<input name="cardkindduetime" type="datetime" placeholder="请输入卡种截止日期" class="form-control" ng-model="form.cardkindduetime" required />-->
+            </div>
+            <div class="form-group col-md-6">
+                <label>卡种销售金额</label>
+                <input name="cardkindsales" id="input-cardkindsales" type="number" placeholder="0" class="form-control" ng-model="form.cardkindsales" required />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="input-ifcalculatesales">卡种销售是否计入业绩</label>
+                <input name="ifcalculatesales" class="form-control" id="input-ifcalculatesales" type="checkbox"  ng-model="form.ifcalculatesales" />
+            </div>
+            <div class="form-group col-md-6">
+                <label>卡种结算方式</label>
+                <select class="dropdown form-control" ng-model="form.balancetype">
+                    <option ng-repeat="balancetype in balancetypes" value="{{balancetype}}">{{balancetype}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6" ng-if="form.balancetype=='金额结算'">
+                <label>卡种卡内金额</label>
+                <input name="cardmoney" id="input-cardmoney" type="number" placeholder="0" class="form-control" ng-model="form.cardmoney" />
+            </div>
+            <div class="form-group col-md-6" ng-if="form.balancetype=='次数结算'">
+                <label>卡种卡内次数</label>
+                <input name="cardtimes" id="input-cardtimes" type="number" placeholder="0" class="form-control" ng-model="form.cardtimes" />
+            </div>
+            <div class="form-group col-md-12">
+                <label>卡种卡号前缀</label>
+                <input name="cardnumberprefix" id="input-cardnumberprefix" type="text" placeholder="10010" class="form-control" ng-model="form.cardnumberprefix" />
+            </div>
+            <div class="form-group col-md-12">
+                <label>选择适用门店</label>
+                <shop-list shops="form.shops" usershop="ALL" mode="multiselect" selectitems="{{form.cardkinduseshop}}"></shop-list>
+            </div>
+            <div class="form-group col-md-12">
+                <label>设置产品抵用规则<button class="btn btn-sm" ng-click="showproduct()"><i class="fa fa-plus"></i></button></label>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>产品名称</th>
+                            <th>产品折扣</th>
+                            <th>可使用次数</th>
+                            <th>使用周期</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="product in form.products">
+                            <td>{{product.productname}}</td>
+                            <td><input  type="number" ng-model="product.servediscount"/></td>
+                            <td><input  type="number"  ng-model="product.servetimes"/></td>
+                            <td><input  type="number"  ng-model="product.servecycle"/></td>
+                            <td><button class="btn btn-sm btn-danger" ng-click="delproduct(product)"><i class="fa fa-remove"></i></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="popselect panel panel-primary" ng-if="form.$showproducts">
+                <div class="panel-heading">
+                    选择产品
+                </div>
+                <div class="panel-body" >
+                    <product-list  selectproducts="$parent.form.addproducts" rolepurview="ALL" mode="multiselect"></product-list>
+                    <div class="form-group col-md-4">
+                        <label>抵用折扣/现金</label>
+                        <input name="servediscount" type="number" placeholder="0.8表示8折，大于1表示现金折扣" class="form-control" ng-model="form.servediscount" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>可享受抵用次数</label>
+                        <input name="servetimes" type="number" placeholder="0表示无限制" class="form-control" ng-model="form.servetimes" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>可抵用周期（天）</label>
+                        <input name="servecycle" type="number" placeholder="0表示无限制" class="form-control" ng-model="form.servecycle" />
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-default" ng-click="hideproduct()">完成</button>
+                </div>
+
+            </div>
+
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row" ng-if="ispop">
+        <span flex></span>
+        <md-button ng-click="save()" target="_blank" md-autofocus>
+            保存
+        </md-button>
+
+        <md-button ng-click="cancel()">
+            取消
+        </md-button>
+
+    </md-dialog-actions>
+    <div class="modal-footer" ng-if="!ispop">
+        <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addform.$invalid" ng-click="save()">保存</button>
+        <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
+    </div>

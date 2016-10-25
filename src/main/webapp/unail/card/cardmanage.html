@@ -1,0 +1,58 @@
+<md-dialog style="width:66%">
+    <md-toolbar style="margin-bottom:0.5em;">
+        <div class="md-toolbar-tools">
+            <h4>卡片管理--{{modal.cardkind.cardkindname}}</h4>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+<md-dialog-content>
+    <div class="col-md-12">
+        <button class="btn btn-labeled btn-danger " ng-click="deleteCards()" style="margin-bottom:0.5em;margin-left:3em;float:left;">
+            <span class="btn-label">
+                <i class="fa fa-recycle"></i>
+            </span>
+            删除卡片
+        </button>
+        <input class="form-control " type="text" placeholder="输入卡号查询" ng-model="srchcardno" style="width:30%;float:right;"/>
+        <div style="clear:both;"></div>
+    </div>
+    <div style="clear:both;"></div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox"  ng-model="$isselectall" ng-click="selectall($value)"/></th>
+                    <th>卡片号</th>
+                    <th>用户</th>
+                    <th>卡片余额</th>
+                    <th>卡片次数</th>
+                    <th>卡片最近消费</th>
+                    <th>卡片有效期</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="card in cards|filter:{cardno:srchcardno}">
+                    <td>
+                        <input type="checkbox" ng-model="card.$isselected" />
+                    </td>
+                    <td>{{ card.cardno }}</td>
+                    <td data-ng-if="card.custom!=null">{{ card.custom.customname }}</td>
+                    <td data-ng-if="card.custom==null"><button class="btn btn-sm btn-default">选择用户</button></td>
+                    <td>{{ card.surplussales }}</td>
+                    <td>{{ card.surplustimes }}</td>
+                    <td>{{ card.lastconsumetime }}</td>
+                    <td>{{ card.cardduetime|date:"yyyy-MM-dd" }}</td>
+                    <td>
+                        <button ng-if="card.cardstatus==1" class="btn btn-danger btn-sm" ng-click="updateCardstatus('disable',card.cardid)">作废</button>
+                        <button ng-if="card.cardstatus==0" class="btn btn-success btn-sm" ng-click="updateCardstatus('enable',card.cardid)">启用</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</md-dialog-content>
+</md-dialog>

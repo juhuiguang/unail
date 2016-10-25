@@ -1,0 +1,65 @@
+<style>
+	.md-headline.cardkind {
+		min-height: 96px;
+	}
+</style>
+<h3>卡券管理</h3>
+    <button class="btn btn-labeled btn-success" ng-click="openAdd()" style="margin-bottom:0.5em;">
+        <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>
+        添加卡种
+    </button>
+    <div class="row">
+        <ul  class="btn-group col-md-12">
+            <li class="mb-sm btn btn-default" ng-class="{active:alltype}" ng-click="loadallcardkind(type)">
+                全部
+            </li>
+            <li ng-repeat="type in cardkindtypes" class="mb-sm btn btn-default" ng-class="{active:type.$isselected}" ng-click="loadtypecardkind(type)">
+                {{type.name}}
+            </li>
+        </ul>
+    </div>
+<div ng-if="alertflag=='show'" class="alert" role="alert">
+    <uib-alert type="{{$parent.alert.type}}" dismiss-on-timeout="2000" close="$parent.alertflag='hide'">{{$parent.$parent.alert.msg}}</uib-alert>
+</div>
+<div class="row">
+    <div class="col-md-3" ng-repeat="cardkind in cardkinds">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text style="position:relative;">
+                    <span class="md-headline cardkind" style="margin-right:2em;">{{cardkind.cardkindname}}</span>
+                    <span class="md-subhead">{{cardkind.cardkindtype}} | {{cardkind.balancetype}}</span>
+                    <div ng-click="openupdatekind(cardkind)" style="position:absolute;top:0px;right:1.5em;width:1em;height:1em;"><i class="fa fa-edit" style="width:1em;"></i></div>
+                    <div  style="position:absolute;top:0px;right:0;width:1em;height:1em;" ng-click="delcardkind(cardkind)"><i class="fa fa-remove"></i></div>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="list-group">
+                    <div class="list-group-item">卡销售金额：{{cardkind.cardkindsales}}</div>
+                    <div class="list-group-item">卡截止时间：{{cardkind.cardkindduetime |date:"yyyy-MM-dd"}}</div>
+                    <div class="list-group-item">卡券数量：{{cardkind.cardcount}}</div>
+                </div>
+            </md-card-content>
+
+            <md-card-actions>
+                <button class="btn btn-sm btn-success" data-ng-if="cardkind.cardkindstatus==0" style="float:left; margin-left:0.5em;" ng-click="changestatus(cardkind)">启用</button>
+                <button class="btn btn-sm btn-danger" ng-if="cardkind.cardkindstatus==1" style="float:left; margin-left:0.5em;" ng-click="changestatus(cardkind)">停用</button>
+
+                <button class="btn btn-sm btn-warning" style="float:left;margin-left:0.5em;" ng-click="openCardManage(cardkind)">管理卡片</button>
+                <button class="btn btn-sm btn-success " ng-click="salecard(cardkind)" style="margin-bottom:0.5em;margin-left:1em;float:left;" ng-disabled="cardkind.cardkindstatus==0">
+                    <i class="fa fa-credit-card"></i>
+                </button>
+                <button class="btn btn-sm btn-success " ng-click="gencard(cardkind)" style="margin-bottom:0.5em;margin-left:1em;float:left;" ng-disabled="cardkind.cardkindstatus==0">
+                    <i class="fa fa-newspaper-o"></i>
+                </button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>
+<md-sidenav class="md-sidenav-right" md-component-id="cardform"
+            md-disable-backdrop md-whiteframe="4" style="width:50%;">
+    <div ui-view="addCard">
+
+    </div>
+</md-sidenav>

@@ -1,0 +1,70 @@
+<style>
+	.col-sm-9.shopslist {
+		margin-top: 8px;
+   		margin-left: -15px;
+	}
+	.ng-binding {
+	    vertical-align: middle;
+	    font-weight: normal;
+	    cursor: pointer;
+	}
+</style>
+<div class="modal-header">
+	<h3 class="modal-title">{{ModTitle}}</h3>
+</div>
+<div class="modal-body">
+	<form role="form" name="addStaffform" class="form-horizontal" novalidate="novalidate">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">员工编号</label> 
+			<div class="col-sm-7">    
+		      <input name="staffno" id="input-no" type="text" placeholder="请输入员工编号" class="form-control" ng-model="form.staffno" required />
+		    </div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">员工姓名</label> 
+			<div class="col-sm-7">    
+		      <input name="staffname" id="input-name" type="text" placeholder="请输入员工姓名" class="form-control" ng-model="form.staffname" required />
+		    </div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">员工年龄</label>
+			<div class="col-sm-7">    
+		      <input name="staffage" id="input-age" type="text" placeholder="请输入员工年龄" class="form-control" ng-model="form.staffage" />
+		    </div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">员工电话</label> 
+			<div class="col-sm-7">    
+		      <input name="staffphone" id="input-phone" type="text" placeholder="请输入员工电话" class="form-control" ng-model="form.staffphone" />
+		    </div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">所属门店</label>
+			<div class="col-sm-9 shopslist">
+				<shop-list shops="form.shops" usershop="{{usershop}}" mode="singleselect"></shop-list>
+			</div>
+		</div>
+		
+		<div class="form-group" ng-if="ModTitle=='修改员工'">  
+            <label class="col-sm-3 control-label">员工状态</label>
+            <div class="col-sm-7"> 
+            	<label class="radio-inline"> 
+				  <input type="radio" name="staffstate" id="" value="正常" ng-model="form.staffstate"> 正常
+				</label>
+            	<label class="radio-inline">
+				  <input type="radio" name="staffstate" id="" value="异常" ng-model="form.staffstate"> 异常
+				</label>
+        	</div>       
+        </div>
+		
+	</form>
+
+</div>
+<div class="modal-footer">
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addStaffform.$invalid" ng-click="save(addStaffform)">保存</button>
+    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
+</div>

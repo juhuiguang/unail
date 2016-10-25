@@ -1,0 +1,47 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h4>批量生成卡片</h4>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+            <i class="fa fa-close"></i>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-dialog-content>
+    <form novalidate name="multiform">
+        <div class="list-group">
+           <div class="list-group-item" ng-if="cardkind==null">
+               <label>选择卡种</label>
+               <select ng-model="currentcardkindno" ng-change="setCurrentCardkind(currentcardkindno)" class="form-control">
+                   <option ng-repeat="kind in cardkinds" value="{{kind.cardkindno}}">{{kind.cardkindname}}</option>
+               </select>
+           </div>
+            <div class="list-group-item">
+                <label>当前卡种:{{currentcardkind.cardkindname}}</label>
+            </div>
+            <div class="list-group-item">
+                <div class="col-lg-6">
+                    <label>卡号起始</label>
+                    <input class="form-control" placeholder="输入卡号开始" type="number" ng-model="cardnostart" required/>
+                </div>
+
+                <div class="col-lg-6">
+                    <label>卡号结束</label>
+                    <input class="form-control" placeholder="输入卡号结束" type="number" ng-model="cardnoend" required/>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+            <div class="list-group-item">
+                生成卡号：{{currentcardkind.cardnumberprefix}}-{{cardnostart}}至{{currentcardkind.cardnumberprefix}}-{{cardnoend}}
+            </div>
+            <div class="list-group-item">
+                <label>卡片有效期</label>
+                <input class="form-control" type="date" ng-model="cardduetime" value='{{cardkind.cardkindduetime|date:"yyyy-MM-dd"}}' />
+            </div>
+        </div>
+    </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <button class="btn-success btn" ng-click="save()" ng-disabled="multiform.$invalid">保存</button>
+        <button class="btn-danger btn" ng-click="cancel()">取消</button>
+    </md-dialog-actions>

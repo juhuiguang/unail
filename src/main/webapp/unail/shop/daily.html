@@ -1,0 +1,180 @@
+<h3>今日运营</h3>
+<div class="col-md-12" style="margin-bottom:3em;">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <form class="form-inline">
+                <div class="form-group" ng-if="shops.length&&shops.length>0" style="margin-right:2em;">
+                    <label>选择门店</label>
+                    <select class="form-control" ng-model="$parent.cshopNo" ng-change="$parent.loaddata()">
+                        <option ng-repeat="sshop in shops" value="{{sshop.shopNo}}">{{sshop.shopName}}</option>
+                    </select>
+                </div>
+                <div class="form-group" ng-if="!shops.length" style="margin-right:2em;">
+                    <label>门店：</label>
+                    <span>{{$parent.shop.shopName}}</span>
+                </div>
+                <div class="form-group">
+                    <label>日期：</label>
+                    <input type="date" class="form-control" ng-model="srchdate" placeholder="请选择日期" ng-change="loaddata()"/>
+                </div>
+            </form>
+        </div>
+        <div class="panel-body">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h4>营业情况汇总</h4>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="panel widget bg-primary">
+                            <div class="row row-table">
+                                <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+                                    <em class="fa fa-rmb fa-3x"></em>
+                                </div>
+                                <div class="col-xs-8 pv-lg">
+                                    <div class="h2 mt0">{{total}}<small class="">元</small></div>
+                                    <div class="text-uppercase">今日营业额</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="panel widget bg-purple">
+                            <div class="row row-table">
+                                <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+                                    <em class="fa fa-money fa-3x"></em>
+                                </div>
+                                <div class="col-xs-8 pv-lg">
+                                    <div class="h2 mt0">{{cash}}<small class="">元</small></div>
+                                    <div class="text-uppercase">实收(现金/刷卡)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="panel widget bg-green">
+                            <div class="row row-table">
+                                <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+                                    <em class="fa fa-stack-overflow fa-3x"></em>
+                                </div>
+                                <div class="col-xs-8 pv-lg">
+                                    <div class="h2 mt0">{{extra}}<small class="">元</small></div>
+                                    <div class="text-uppercase">共累计申请折扣</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="panel widget">
+                            <div class="row row-table">
+                                <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+                                    <em class="fa fa-users fa-3x"></em>
+                                </div>
+                                <div class="col-xs-8 pv-lg">
+                                    <div class="h2 mt0">{{customs.length}} <small class="">人</small></div>
+                                    <div class="text-uppercase">到店消费客户数</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h4>结算明细</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" ng-if="consumes.length>0">
+                            <thead>
+                            <tr>
+                                <th>项目或产品</th>
+                                <th>数量</th>
+                                <th>客户</th>
+                                <th>单价/总价</th>
+                                <th>实收金额</th>
+                                <th>现金部分</th>
+                                <th>卡券抵用</th>
+                                <th>额外折扣</th>
+                                <th>实收比例</th>
+                                <th>时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="consume in consumes">
+                                <td>{{consume.proname}}</td>
+                                <td>{{consume.procount}}</td>
+                                <td>{{consume.customname}}</td>
+                                <td><strong>{{consume.proprice}}/{{consume.product_total}}</strong></td>
+                                <td class="text-success" ng-if="consume.pay_total==consume.product_total">{{consume.pay_total}}</td>
+                                <td class="text-warning" ng-if="consume.pay_total!=consume.product_total"><strong>{{consume.pay_total}}</strong></td>
+                                <td>{{consume.cashprice}}</td>
+                                <td>{{consume.dealprice}}</td>
+                                <td>{{consume.extraprice}}</td>
+                                <td class="text-center">
+                                    <div data-label="{{consume.pay_total/consume.product_total*100 |number:1}}%"
+                                         class="radial-bar radial-bar-{{consume.pay_total/consume.product_total*100/5*5 |number:0}} radial-bar-xs radial-bar-warning">
+
+                                    </div>
+                                </td>
+                                <td>{{consume.consumetime|date:"HH:mm"}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="label label-warning" ng-if="consumes.length==0">无结算项目</div>
+                    </div>
+
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h4>卡片售卖明细</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" ng-if="salecards.length>0">
+                            <thead>
+                            <tr>
+                                <th>卡片种类</th>
+                                <th>卡号</th>
+                                <th>价格</th>
+                                <th>实收现金</th>
+                                <th>客户</th>
+                                <th>时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="card in salecards">
+                                <td>{{card.cardkindname}}</td>
+                                <td>{{card.cardno}}</td>
+                                <td><strong>{{card.sales}}</strong></td>
+                                <td>{{card.salesmoney}}</td>
+                                <td>{{card.customername}}</td>
+                                <td>{{card.salestime|date:"HH:mm"}}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="label label-warning" ng-if="salecards.length==0">无卡片售出</div>
+                    </div>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h4>到店消费客户</h4>
+                    </div>
+                    <div class="label label-warning" ng-if="customs.length==0">无客户消费</div>
+                    <div class="col-xs-2" ng-if="customs.length>0" ng-repeat="custom in customs">
+                        <div class="media" >
+                            <div class="media-left media-middle">
+                                <em class="fa fa-user"></em>
+                            </div>
+                            <div class="media-body pt-sm">
+                                <div class="text-bold">{{custom.name}}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

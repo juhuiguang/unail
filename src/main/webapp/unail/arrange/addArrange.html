@@ -1,0 +1,152 @@
+<style>
+	.form-group .shopslist {
+		margin-top: 6px;
+	}
+	.ng-binding {
+	    vertical-align: middle;
+	    font-weight: normal;
+	    cursor: pointer;
+	}
+	li.shopitem.col-md-3 {
+	    width: initial;
+	}
+	a {
+	    vertical-align: -webkit-baseline-middle;
+	}
+	ol.breadcrumb.productlist {
+		padding: 8px 15px;
+	    margin-bottom: 7px;
+	    list-style: none;
+	    background-color: #f5f5f5;
+	    border-radius: 5px;
+	    margin-top: 8px;
+	}
+	.arrange-datetime {
+		margin-left: -15px;
+    	margin-top: -3px;
+	}
+	.col-sm-7.shopslist {
+		margin-left: -15px;
+	}    
+</style>
+<div class="modal-header">
+    <h3 class="modal-title">{{ModTitle}}</h3>
+</div>
+<div class="modal-body" ng-if="ModTitle=='添加预约'">
+	<form role="form" name="addArrangeform" class="form-horizontal" novalidate="novalidate">
+	    <div class="form-group">
+	    	<label class="col-sm-3 control-label">预约客户姓名</label> 
+	    	<div class="col-sm-7">    
+	      		<input name="cusname" id="input-name" type="text" placeholder="请输入预约客户姓名" class="form-control" ng-model="form.customname" required />
+	    	</div>     
+	  	</div>
+		<div class="form-group">
+	       <label class="col-sm-3 control-label">预约客户电话</label>
+	       <div class="col-sm-7">
+	          <input name="cusphone" id="input-phone" type="tel" placeholder="请输入预约客户电话" class="form-control" ng-model="form.customphone" required />
+	       </div>
+	    </div>
+		<div class="form-group">
+			 <label class="col-sm-3 control-label">客户类型</label>
+			 <div class="col-sm-7"> 
+            	<label class="radio-inline"> 
+				  <input type="radio" name="custype" id="radio-vip" value="会员" ng-model="form.customtype"> 会员
+				</label>
+            	<label class="radio-inline">
+				  <input type="radio" name="custype" id="radio-fit" value="散客" ng-model="form.customtype"> 散客     
+				</label>
+        	</div>  
+		</div>
+		<div class="form-group">
+            <label class="col-sm-3 control-label">预约时间</label>   
+            <div class="col-sm-3 arrange-datetime">
+				<md-datepicker ng-model="form.arrangedate" md-placeholder="请选择预约日期" md-open-on-focus style="width:100%;"></md-datepicker>
+        	</div>
+			<div class="col-sm-2">
+				<select class="form-control dropdown" ng-model="form.arrangetime" required>
+					<option value="{{time}}" ng-repeat="time in timearry">{{time}}</option>
+				</select>
+			</div>
+        </div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">选择预约门店</label>
+			<div class="col-sm-7 shopslist">
+				<shop-list shops="form.shops" usershop="{{purview}}" mode="singleselect"></shop-list>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">预约产品项目</label>
+			<div class="col-sm-7">   
+				<a ng-click="showproduct()">< 选择添加 ></a>
+				
+				<ol class="breadcrumb productlist" ng-repeat="product in form.products">
+					<li class="active"> {{product.producttype1}} </li>
+				    <li> {{product.productname}} </li>
+				    <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="delproduct(product)"><span aria-hidden="true">&times;</span></button>
+				</ol>
+			</div>
+		</div>
+		
+		<div class="popselect panel panel-primary" ng-if="form.$showproducts">
+            <div class="panel-body" >
+				<product-list selectproducts="$parent.form.addproducts" rolepurview="ALL" mode="multiselect"></product-list>
+			</div>
+			<div class="panel-footer">
+				<button class="btn btn-default" ng-click="hideproduct()">完成</button>
+			</div>
+		</div>
+		
+		<div style="clear:both;"></div>
+	</form>
+</div>
+
+<div class="modal-body" ng-if="ModTitle=='查看预约'">
+	<form role="form" name="addArrangeform" class="form-horizontal" novalidate="novalidate">
+	    <div class="form-group">
+	    	<label class="col-sm-3 control-label">预约客户姓名</label>
+	    	<div class="col-sm-7">    
+	    		<label name="cusname" class="form-control-static">{{form.customname}}</label>
+	    	</div>     
+	  	</div>
+		<div class="form-group">
+	       <label class="col-sm-3 control-label">预约客户电话</label>
+	       <div class="col-sm-7">
+	       	  <label name="cusphone" class="form-control-static">{{form.customphone}}</label>
+	       </div>
+	    </div>
+		<div class="form-group">
+			 <label class="col-sm-3 control-label">客户类型</label>
+			 <div class="col-sm-7"> 
+            	<label name="custype" class="form-control-static">{{form.customtype}}</label>
+        	</div>  
+		</div>
+		<div class="form-group">
+            <label class="col-sm-3 control-label">预约时间</label>   
+            <div class="col-sm-7"> 
+            	<label name="arrange-datetime" class="form-control-static">{{form.arrangetime|date : 'yyyy-MM-dd'}} - {{form.timestr}}</label>
+        	</div>  
+        </div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">选择预约门店</label>
+			<div class="col-sm-7">
+				<label name="arrange-shop" class="form-control-static">{{form.arrangeshop}}</label>   
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">预约产品项目</label>
+			<div class="col-sm-7">   
+				<ol class="breadcrumb productlist" ng-repeat="productItem in productItems">
+					<li class="active"> {{productItem.producttype1}} </li>  
+				    <li> {{productItem.productname}} </li>
+				</ol>
+			</div>
+		</div>
+
+		<div style="clear:both;"></div>
+	</form>
+</div>
+
+<div class="modal-footer">
+    <button ng-if="ModTitle=='添加预约'" class="mb-sm btn btn-primary" type="submit" ng-disabled="addArrangeform.$invalid" ng-click="save(addArrangeform)">保存</button>
+    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
+</div>
