@@ -18,9 +18,10 @@
    <title>UNAIL运行管理平台</title>
    <!-- Bootstrap styles-->
    <link rel="stylesheet" href="app/css/bootstrap.css">
-   <link rel="stylesheet" href="vendor/angularjs/angular-material.min.css">
+
    <!-- Application styles-->
    <link rel="stylesheet" href="app/css/app.css">
+   <link rel="stylesheet" href="vendor/angularjs/angular-material.min.css">
    <!-- Themes-->
    <link rel="stylesheet" ng-href="{{app.layout.theme}}" data-ng-if="app.layout.theme">
 

@@ -330,7 +330,7 @@
 				shopservice.getshopconsume($scope.cshopNo,$filter("date")($scope.srchdate,"yyyy-MM-dd"),function(result){
 					if(result.result>0){
 						$scope.consumes=result.data;//结算记录
-						shopservice.getshopcardsale($scope.shop.shopNo,$filter("date")($scope.srchdate,"yyyy-MM-dd"),function(result){
+						shopservice.getshopcardsale($scope.cshopNo,$filter("date")($scope.srchdate,"yyyy-MM-dd"),function(result){
 							$scope.cash=0;
 							$scope.extra=0;
 							$scope.customs=[];

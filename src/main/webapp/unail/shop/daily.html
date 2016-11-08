@@ -32,7 +32,7 @@
                                     <em class="fa fa-rmb fa-3x"></em>
                                 </div>
                                 <div class="col-xs-8 pv-lg">
-                                    <div class="h2 mt0">{{total}}<small class="">元</small></div>
+                                    <div class="h2 mt0">{{total|currency : '￥'}}<small class="">元</small></div>
                                     <div class="text-uppercase">今日营业额</div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                     <em class="fa fa-money fa-3x"></em>
                                 </div>
                                 <div class="col-xs-8 pv-lg">
-                                    <div class="h2 mt0">{{cash}}<small class="">元</small></div>
+                                    <div class="h2 mt0">{{cash|currency : '￥'}}<small class="">元</small></div>
                                     <div class="text-uppercase">实收(现金/刷卡)</div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                     <em class="fa fa-stack-overflow fa-3x"></em>
                                 </div>
                                 <div class="col-xs-8 pv-lg">
-                                    <div class="h2 mt0">{{extra}}<small class="">元</small></div>
+                                    <div class="h2 mt0">{{extra|currency : '￥'}}<small class="">元</small></div>
                                     <div class="text-uppercase">共累计申请折扣</div>
                                 </div>
                             </div>

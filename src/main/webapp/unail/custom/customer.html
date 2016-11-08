@@ -31,24 +31,19 @@
 </style>
 
 <h3>{{title}}</h3>
-<nav class="navbar navbar-default cus">   
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">          
-      <button class="btn btn-default cus add" ng-click="addcustom()"><span class="btn-label"><i class="fa fa-plus"></i></span> 新增客户 </button>   
-      <button class="btn btn-default cus del" ng-click="deletecustoms()"><span class="btn-label"><i class="fa fa-minus"></i></span> 删除所选客户 </button>    
-    </div>                      
-     <ul class="nav navbar-nav navbar-right search">
-	    <form class="navbar-form navbar-left" role="search">      
-	       <div class="form-group"> 
-	         <input type="text" class="form-control" placeholder="客户姓名搜索" ng-model="searchkey">
-	       </div>
-	       <button type="submit" class="btn btn-default" ng-click="searchcustom(searchkey)">搜  索</button>   
-	     </form>
-	  </ul>
+<div class="col-md-8 col-sm-12">
+	<button class="btn btn-default cus add" ng-click="addcustom()"><i class="fa fa-plus"></i>新增客户 </button>
+	<button class="btn btn-default cus del" ng-click="deletecustoms()"><i class="fa fa-minus"></i> 删除所选客户 </button>
 
-  </div>
-</nav>
+</div>
+<div class="col-md-4 col-sm-12">
+	<form class="form-inline">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="客户姓名搜索" ng-model="searchkey">
+			<button type="submit" class="btn btn-default" ng-click="searchcustom(searchkey)">搜  索</button>
+		</div>
+	</form>
+</div>
 
 <table class="table table-striped customs">    
 	<thead>       
