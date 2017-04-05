@@ -15,7 +15,95 @@
         <!--<option ng-repeat="shop in $parent.shops" ng-value="shop.shopNo">{{shop.shopName}}</option>-->
     </select>
 </h3>
-<div class="col-md-7 leftpanel panel-primary">
+<div class="col-md-5 leftpanel ">
+    <div class="col-md-12 panel-primary">
+        <div class="panel-heading">选择消费产品</div>
+        <div class=" panel list-group">
+            <div class="list-group-item" ng-repeat="consumeproduct in consume.consumeproducts">
+                <div style="max-width:80%;">{{consumeproduct.product.productname}}----原价：{{consumeproduct.product.productprice1}}元 | 现价：{{consumeproduct.product.productprice2}}元</div>
+                <div class="btn btn-sm btn-danger" style="position:absolute;right:0.5em;top:0.5em;" ng-click="removeConsumeproduct(consumeproduct)"><span class="fa fa-remove"></span></div>
+            </div>
+            <div class="list-group-item chooseproduct" >
+                <button class="btn-default btn form-control" ng-click="chooseproduct($event)"><span class="fa fa-plus"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 panel-primary">
+        <div class="panel-heading">会员信息</div>
+        <div class="panel">
+            <div data-ng-if="consume.custom==null"  class="bg-gray-light" style="padding:0.5em;">
+                暂无会员信息，请输入会员卡号、手机号码、姓名查询。
+            </div>
+            <select-custom selectcustom="consume.custom"></select-custom>
+            <div class="list-group" data-ng-if="consume.custom!=null">
+                <div class="list-group-item" >
+                    <label>客户姓名：{{consume.custom.customname}} <span class="btn" ng-click="showcustomer(consume.custom)"><i class="fa fa-search"></i></span></label>
+                </div>
+                <div class="list-group-item" >
+                    <label>客户电话：{{consume.custom.customphone}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 panel-primary">
+        <div class="panel-heading">输入卡券</div>
+        <div class=" panel">
+            <form name="cardform" novalidate>
+                <input type="text" class="form-control" style="float:left;width:80%" ng-model="searchcard" placeholder="请输入卡券号" required />
+                <button ng-disabled="cardform.$invalid" class="btn btn-sm btn-warning" style="float:right;width:20%;" ng-click="getcard()">应用卡券</button>
+                <div class="clearfix"></div>
+            </form>
+            <div class="list-group" ng-if="solocard!=null">
+                <div class="list-group-item">
+                    <label>卡号</label>
+                    <span>{{solocard.cardno}}</span>
+                </div>
+                <div class="list-group-item">
+                    <label>卡种</label>
+                    <span>{{solocard.cardkind.cardkindname}}</span>
+                </div>
+                <div class="list-group-item">
+                    <label>卡片有效期</label>
+                    <span>{{solocard.cardduetime}}</span>
+                </div>
+                <div class="list-group-item">
+                    <label>卡片余额</label>
+                    <span>{{solocard.surplussales}}元/{{solocard.surplustimes}}次</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 panel-warning " data-ng-if="consume.consumeproducts.length>0">
+        <div class="panel-heading">结算信息</div>
+        <div class="panel-body panel list-group">
+            <div class="list-group-item">
+                <label>结算总金额：{{consume.totalprice}} 元</label>
+            </div>
+            <div class="list-group-item">
+                <label>已抵用总金额：{{consume.dealprice}} 元</label>
+            </div>
+            <div class="list-group-item">
+                <label>现金支付金额：{{consume.cashprice}} 元</label>
+            </div>
+
+            <div class="list-group-item">
+                <label>
+                    剩余结算金额：{{consume.totalprice-consume.dealprice-consume.cashprice}} 元<span ng-if="consume.extradiscount>0">（已申请折扣 {{consume.extradiscount}} 元）</span>
+                    <button class="btn-sm btn-warning btn" ng-if="consume.totalprice-consume.dealprice-consume.cashprice>0&&consume.extradiscount==0" ng-click="getextradiscount()">申请</button>
+                    <button class="btn-sm btn-warning btn" ng-if="consume.totalprice-consume.dealprice-consume.cashprice>0&&consume.extradiscount>0" ng-click="cancelextradiscount()">取消</button>
+                </label>
+            </div>
+            <div class="list-group-item">
+                <button  class="btn-success form-control btn" ng-disabled="consume.totalprice-consume.dealprice-consume.cashprice-consume.extradiscount>0||$consuming" ng-click="submit()">
+                    <span ng-if="!$consuming">完成结算</span>
+                    <span ng-if="$consuming">结算中，请勿重复提交</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="col-md-7 rightpanel panel-primary">
     <div class="panel-heading">结算区域</div>
     <div class="panel">
         <div ng-if="consume.consumeproducts.length==0" class="bg-gray-light" style="padding:0.5em;">
@@ -127,92 +215,5 @@
         </div>
     </div>
 </div>
-<div class="col-md-5 rightpanel">
-    <div class="col-md-12 panel-primary">
-        <div class="panel-heading">选择消费产品</div>
-        <div class=" panel list-group">
-            <div class="list-group-item" ng-repeat="consumeproduct in consume.consumeproducts">
-                <div style="max-width:80%;">{{consumeproduct.product.productname}}----原价：{{consumeproduct.product.productprice1}}元 | 现价：{{consumeproduct.product.productprice2}}元</div>
-                <div class="btn btn-sm btn-danger" style="position:absolute;right:0.5em;top:0.5em;" ng-click="removeConsumeproduct(consumeproduct)"><span class="fa fa-remove"></span></div>
-            </div>
-            <div class="list-group-item chooseproduct" >
-                <button class="btn-default btn form-control" ng-click="chooseproduct($event)"><span class="fa fa-plus"></span></button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12 panel-primary">
-        <div class="panel-heading">会员信息</div>
-        <div class="panel">
-            <div data-ng-if="consume.custom==null"  class="bg-gray-light" style="padding:0.5em;">
-                暂无会员信息，请输入会员卡号、手机号码、姓名查询。
-            </div>
-            <select-custom selectcustom="consume.custom"></select-custom>
-            <div class="list-group" data-ng-if="consume.custom!=null">
-                <div class="list-group-item" >
-                    <label>客户姓名：{{consume.custom.customname}}</label>
-                </div>
-                <div class="list-group-item" >
-                    <label>客户电话：{{consume.custom.customphone}}</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12 panel-primary">
-        <div class="panel-heading">输入卡券</div>
-        <div class=" panel">
-            <form name="cardform" novalidate>
-                <input type="text" class="form-control" style="float:left;width:80%" ng-model="searchcard" placeholder="请输入卡券号" required />
-                <button ng-disabled="cardform.$invalid" class="btn btn-sm btn-warning" style="float:right;width:20%;" ng-click="getcard()">应用卡券</button>
-                <div class="clearfix"></div>
-            </form>
-            <div class="list-group" ng-if="solocard!=null">
-                <div class="list-group-item">
-                    <label>卡号</label>
-                    <span>{{solocard.cardno}}</span>
-                </div>
-                <div class="list-group-item">
-                    <label>卡种</label>
-                    <span>{{solocard.cardkind.cardkindname}}</span>
-                </div>
-                <div class="list-group-item">
-                    <label>卡片有效期</label>
-                    <span>{{solocard.cardduetime}}</span>
-                </div>
-                <div class="list-group-item">
-                    <label>卡片余额</label>
-                    <span>{{solocard.surplussales}}元/{{solocard.surplustimes}}次</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12 panel-warning " data-ng-if="consume.consumeproducts.length>0">
-        <div class="panel-heading">结算信息</div>
-        <div class="panel-body panel list-group">
-            <div class="list-group-item">
-                <label>结算总金额：{{consume.totalprice}} 元</label>
-            </div>
-            <div class="list-group-item">
-                <label>已抵用总金额：{{consume.dealprice}} 元</label>
-            </div>
-            <div class="list-group-item">
-                <label>现金支付金额：{{consume.cashprice}} 元</label>
-            </div>
 
-            <div class="list-group-item">
-                <label>
-                    剩余结算金额：{{consume.totalprice-consume.dealprice-consume.cashprice}} 元<span ng-if="consume.extradiscount>0">（已申请折扣 {{consume.extradiscount}} 元）</span>
-                    <button class="btn-sm btn-warning btn" ng-if="consume.totalprice-consume.dealprice-consume.cashprice>0&&consume.extradiscount==0" ng-click="getextradiscount()">申请</button>
-                    <button class="btn-sm btn-warning btn" ng-if="consume.totalprice-consume.dealprice-consume.cashprice>0&&consume.extradiscount>0" ng-click="cancelextradiscount()">取消</button>
-                </label>
-            </div>
-            <div class="list-group-item">
-                <button  class="btn-success form-control btn" ng-disabled="consume.totalprice-consume.dealprice-consume.cashprice-consume.extradiscount>0||$consuming" ng-click="submit()">
-                    <span ng-if="!$consuming">完成结算</span>
-                    <span ng-if="$consuming">结算中，请勿重复提交</span>
-                </button>
-            </div>
-        </div>
-
-    </div>
-</div>
     <div style="clear:both;"></div>

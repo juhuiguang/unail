@@ -417,37 +417,46 @@
 				$scope.cardsalesItems = data;
 			}    
 		});
-		
+		//消费明细查询
 		customservice.getCusMoneyInfor(customno,function(data) {
 			if(data == "" || data == null) {
 				$scope.moneyflag = true;
 			} else {
-				console.log(data);
+
 				$scope.moneyflag = false;
 				$scope.moneysalesItems = data;
+				$scope.moneyType=[];
+				for(var i=0;i<data.length;i++){
+					if($scope.moneyType.indexOf(data[i].productType)<0){
+						$scope.moneyType.push(data[i].productType);
+					}
+
+				}
 			}    
 		});
-		$scope.showdetail = function showdetail(cardid,cardno,cardname) {
+		$scope.showdetail = function showdetail(cardsalesItem) {
+			cardsalesItem.cardid,cardsalesItem.cardno,cardsalesItem.cardkindname
 			$scope.details = [];
-			console.log(cardno);
-			console.log(cardname);    
-			$scope.cardno = cardno;
-			$scope.cardname = cardname;
-			console.log(cardid);
-			customservice.getCusDetails(cardid,function(data) {
+			console.log(cardsalesItem.cardno);
+			console.log(cardsalesItem.cardkindname);
+			$scope.cardno = cardsalesItem.cardno;
+			$scope.cardname = cardsalesItem.cardkindname;
+			console.log(cardsalesItem.cardid);
+			customservice.getCusDetails(cardsalesItem.cardid,function(data) {
 				if(data == "" || data == null) {
 
 				} else {
 					console.log(data);
 					$scope.details = data;
-				}    
+				}
+				cardsalesItem.$showdetails = true;
 			});
-			$scope.$showdetails = true;    
+
 			
 		}
 		
-		$scope.hidedetails = function hidedetails() {
-            $scope.$showdetails = false;
+		$scope.hidedetails = function hidedetails(cardsalesItem) {
+			cardsalesItem.$showdetails = false;
 		}
 		
 		$scope.cancel=function cancel(flag){
@@ -577,41 +586,45 @@
 			templateUrl: 'unail/custom/customselect.html',
 			link: function (scope, element, attr, ctrl) {
 				scope.userselect={};
-				customservice.getcustoms(function(result){
-					if(result&&result.length>0){
-						scope.hasuser=true;
-						scope.customs=result.map(function (repo) {
-							repo.value = repo.customno;
-							return repo;
-						});
-					}else{
-						scope.hasuser=false;
-						scope.customs=[].map(function (repo) {
-							repo.value = repo.customno;
-							return repo;
-						});
-					}
-
-					scope.userselect={
-						isDisabled:false,
-						searchTextChange:function(text){
-
-						},
-						selectedItemChange:function(item){
-							scope.selectcustom=item;
-						},
-						querySearch:function(query){
-							var results = query ? scope.customs.filter( createFilterFor(query) ) : scope.customs;
-							return results;
+				loadcustom();
+				function loadcustom(){
+					customservice.getcustoms(function(result){
+						if(result&&result.length>0){
+							scope.hasuser=true;
+							scope.customs=result.map(function (repo) {
+								repo.value = repo.customno;
+								return repo;
+							});
+						}else{
+							scope.hasuser=false;
+							scope.customs=[].map(function (repo) {
+								repo.value = repo.customno;
+								return repo;
+							});
 						}
-					}
-					function createFilterFor(query) {
-						var lowercaseQuery = angular.lowercase(query);
-						return function filterFn(item) {  
-							return (item.customname.indexOf(query)>=0||item.customphone.indexOf(query)>=0);
-						};
-					}
-				});
+
+						scope.userselect={
+							isDisabled:false,
+							searchTextChange:function(text){
+
+							},
+							selectedItemChange:function(item){
+								scope.selectcustom=item;
+							},
+							querySearch:function(query){
+								var results = query ? scope.customs.filter( createFilterFor(query) ) : scope.customs;
+								return results;
+							}
+						}
+						function createFilterFor(query) {
+							var lowercaseQuery = angular.lowercase(query);
+							return function filterFn(item) {
+								return (item.customname.indexOf(query)>=0||(item.customphone&&item.customphone.indexOf(query)>=0)||(item.vipcardno&&item.vipcardno.indexOf(query)>=0));
+							};
+						}
+					});
+				}
+
 				
 		        //客户结算时添加新客户
 				scope.clickAddCustom = function(){   
@@ -626,9 +639,9 @@
 		        	modalInstance.result.then(function(data) {
 		        		//添加保存成功
 		        		if(data.result > 0) {     
-		        			var cus = data.data;   
-		        			scope.userselect.selectedItem = cus;                      
-
+		        			var cus = data.data;
+							loadcustom();
+							scope.userselect.selectedItem = cus;
 		        		} else {
 
 		        		}

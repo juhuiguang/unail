@@ -2,6 +2,7 @@ package com.unail.mvc.service.custom;
 
 import java.util.List;
 
+import com.unail.repositories.entity.logicentity.LProductBlance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class CustomService {
 
 	public List<Custom> getQueryCus(String key) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT a.* FROM custom a LEFT JOIN card b ON b.user_no=a.custom_no WHERE a.custom_name LIKE '%"+key+"%' OR a.custom_phone LIKE '%"+key+"%' OR b.card_no LIKE '%"+key+"%' GROUP BY a.custom_no";
+		String sql = "SELECT a.* FROM custom a WHERE a.custom_name LIKE '%"+key+"%' OR a.custom_phone LIKE '%"+key+"%' OR a.vip_cardno LIKE '%"+key+"%' GROUP BY a.custom_no";
 		SqlService s=new SqlService();
 		List list=s.selectResult(sql,null);
         return DAO.list2T(list,Custom.class);
@@ -81,18 +82,18 @@ public class CustomService {
 
 	public List<CustomCardSalesInfor> getCusSalesInfor(String key) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT a.custom_name,b.card_no,b.card_id,b.surplus_sales,b.surplus_times,c.card_kind_type,c.card_kind_name,c.balance_type FROM custom a LEFT JOIN card b ON b.user_no=a.custom_no LEFT JOIN card_kind c ON b.card_kind_no=c.card_kind_no WHERE a.custom_no='"+key+"'";
+		String sql = "SELECT a.custom_name,b.card_no,b.card_id,b.surplus_sales,b.surplus_times,c.card_kind_type,c.card_kind_name,c.balance_type FROM custom a LEFT JOIN card b ON b.user_no=a.custom_no LEFT JOIN card_kind c ON b.card_kind_no=c.card_kind_no WHERE a.custom_no='"+key+"' order by b.card_id desc";
 		SqlService s=new SqlService();
 		List list=s.selectResult(sql,null);
 		return DAO.list2T(list,CustomCardSalesInfor.class);
 	}
 	
-	public List<ProductBalance> getCusMoneyInfor(String key) {
+	public List<LProductBlance> getCusMoneyInfor(String key) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT * FROM product_balance a WHERE custom_no='"+key+"' AND cashprice >0";
+		String sql = "SELECT a.*,b.`product_type1` FROM product_balance a,product_info b WHERE a.`consume_pro_no`=b.`product_no` AND custom_no='"+key+"' ORDER BY consume_time DESC";
 		SqlService s=new SqlService();
 		List list=s.selectResult(sql,null);
-		return DAO.list2T(list,ProductBalance.class);
+		return DAO.list2T(list,LProductBlance.class);
 	}
 
 	public List<CustomCardSalesInfor> getCusDetails(String key) {

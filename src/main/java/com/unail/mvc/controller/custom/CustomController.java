@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.unail.repositories.entity.logicentity.LProductBlance;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -136,7 +137,7 @@ public class CustomController {
 	
 	@RequestMapping(value="/custom/selectCusMoneyInfor/{key}",method=RequestMethod.GET)
 	public String selectCusMoneyInfor(@PathVariable("key") String key,HttpServletRequest request,HttpServletResponse response) {
-		List<ProductBalance> cusMoneyInfor = service.getCusMoneyInfor(key);
+		List<LProductBlance> cusMoneyInfor = service.getCusMoneyInfor(key);
 		String result = JSON.toJSONString(cusMoneyInfor);
 		return result;
 	}

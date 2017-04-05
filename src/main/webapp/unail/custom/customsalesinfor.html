@@ -46,6 +46,11 @@
 		color: #656565;
     	font-weight: 500;
 	}
+
+
+	table .centertext{
+		text-align:center;
+	}
 	
 </style>
 <div class="modal-header">
@@ -62,53 +67,73 @@
 	  	</div>
 
 		<div class="form-group">
-			<label class="col-sm-2 control-label">所持卡券</label>
-			<div class="col-sm-9" ng-if="cardflag==false">   
-				<ol class="breadcrumb cardsaleslist" ng-repeat="cardsalesItem in cardsalesItems">
+			<div class="col-md-12"><span class="label label-large label-success">所持卡券</span></div>
+			<div class="col-md-12" ng-if="cardflag==false">
+				<ol class="breadcrumb cardsaleslist" ng-repeat="cardsalesItem in cardsalesItems" ng-if="(cardsalesItem.surplussales>0 || showzero) || (cardsalesItem.surplustimes>0|| showzero)" >
 				    <li class="active">{{cardsalesItem.cardno}}</li>
-					<li>{{cardsalesItem.cardkindname}}</li>  
-				    <li class="active" ng-if="cardsalesItem.balancetype=='金额结算'">余额：{{cardsalesItem.surplussales}} 元</li>
-				    <li class="active" ng-if="cardsalesItem.balancetype=='次数结算'">剩余：{{cardsalesItem.surplustimes}} 次</li>
- 				    <span class="btn-label detail-icon" ng-click="showdetail(cardsalesItem.cardid,cardsalesItem.cardno,cardsalesItem.cardkindname)"><i class="fa fa-search"></i></span>
+					<li >{{cardsalesItem.cardkindname}}</li>
+				    <li class="active" ng-if="cardsalesItem.balancetype=='金额结算' ">余额：{{cardsalesItem.surplussales}} 元</li>
+				    <li class="active" ng-if="cardsalesItem.balancetype=='次数结算' ">剩余：{{cardsalesItem.surplustimes}} 次</li>
+ 				    <span class="btn" ng-click="showdetail(cardsalesItem)"><i class="fa fa-search"></i></span>
+					<div class="panel panel-default" style="padding:10px;" ng-if="cardsalesItem.$showdetails">
+						<label class="title"> 消费明细： <span>{{cardno}}</span><span> - </span><span>{{cardname}}</span></label>
+						<table class="table detailitem">
+							<thead>
+								<th class="centertext">消费项目</th>
+								<th class="centertext">消费金额</th>
+								<th class="centertext">卡上余额</th>
+								<th class="centertext">消费时间</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="detail in details">
+									<td class="centertext">{{detail.consumepro}}</td>
+									<td>
+										<span class="money" ng-if="detail.balancetype=='金额结算'">{{detail.cardconsumesales}} ¥ </span>
+										<span class="money" ng-if="detail.balancetype=='次数结算'">{{detail.cardconsumetimes}} 次 </span>
+									</td>
+									<td>
+										<span class="money" ng-if="detail.balancetype=='金额结算'">{{detail.cardsurplussales}} ¥ </span>
+										<span class="money" ng-if="detail.balancetype=='次数结算'">{{detail.cardsurplustimes}} 次</span>
+									</td>
+									<td class="centertext">{{detail.consumetime|date : 'yyyy-MM-dd hh:mm:ss'}}</td>
+
+								</tr>
+							</tbody>
+
+						</table>
+						<button class="btn btn-default" ng-click="hidedetails(cardsalesItem)"> 关 闭 </button>
+					</div>
  				</ol>
- 				
+ 				<ol class="breadcrumb">
+					<li><div class="btn btn-default btn-small" ng-click="showzero=!showzero"><span  ng-if="!showzero">显示零余额卡片</span><span  ng-if="showzero">隐藏零余额卡片</span></div></li>
+				</ol>
 			</div>
-			<div class="col-sm-9" ng-if="cardflag==true">   
+			<div class="col-md-12" ng-if="cardflag==true">
 				<label name="cuscardItems" class="form-control-static"> 暂 无 </label>
 			</div>
 		</div>
-		
+
 		<div class="form-group">
-			<label class="col-sm-2 control-label">现金消费</label>
-			<div class="col-sm-9" ng-if="moneyflag==false">    
-				<ol class="breadcrumb cardsaleslist" ng-repeat="moneysalesItem in moneysalesItems">
-				    <li class="active">{{moneysalesItem.proname}}</li>
-					<li>( {{moneysalesItem.procount}} × {{moneysalesItem.proprice}} ¥ ) {{moneysalesItem.product_total}} ¥</li>
-				    <li class="active">{{moneysalesItem.consumetime|date : 'yyyy-MM-dd hh:mm:ss'}}</li>
- 				</ol>
+			<div class="col-md-12"><span class="label label-large label-success">消费明细</span></div>
+			<div class="col-md-12" style="max-height:400px;overflow-y:scroll;">
+				<uib-accordion close-others="oneAtATime">
+					<div ng-repeat="type in moneyType" uib-accordion-group class="col-md-12" heading="{{type}}">
+						<ol class="breadcrumb cardsaleslist" ng-repeat="moneysalesItem in moneysalesItems |filter:{productType:type}">
+							<li class="active">{{moneysalesItem.proname}}</li>
+							<li>( {{moneysalesItem.procount}} × {{moneysalesItem.proprice}} ¥ ) {{moneysalesItem.product_total}} ¥</li>
+							<li class="active">{{moneysalesItem.consumetime|date : 'yyyy-MM-dd hh:mm:ss'}}</li>
+						</ol>
+					</div>
+
+				</uib-accordion>
+
 			</div>
-			<div class="col-sm-9" ng-if="moneyflag==true">
+			<div class="col-md-12" ng-if="moneyflag==true">
 				<label name="cusmoneyItems" class="form-control-static"> 暂 无 </label>
 			</div>
 		</div>
 		
-		<div class="popselect panel panel-primary col-md-12" ng-if="$showdetails">
-			<h4 class="title"> 消费明细： <span>{{cardno}}</span><span> - </span><span>{{cardname}}</span></h4>
-            <div class="panel-body ">
-            	<div class="col-md-12">
-			        <ol class="detailitem">
-			            <li ng-repeat="detail in details">{{detail.consumepro}}
-			            	<span class="date">{{detail.consumetime|date : 'yyyy-MM-dd hh:mm:ss'}}</span>
-			            	<span class="money" ng-if="detail.balancetype=='金额结算'">{{detail.cardconsumesales}} ¥ / {{detail.cardsurplussales}} ¥ </span>
-			            	<span class="money" ng-if="detail.balancetype=='次数结算'">{{detail.cardconsumetimes}} 次 / {{detail.cardsurplustimes}} 次</span>
-			            </li>
-			        </ol>
-			    </div>
-			</div>
-			<div class="panel-footer">
-				<button class="btn btn-default" ng-click="hidedetails()"> 关 闭 </button>
-			</div>
-		</div>
+
 
 		<div style="clear:both;"></div>
 	</form>

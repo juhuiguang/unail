@@ -12,8 +12,8 @@
             controller:"consumeController"
         });
     }]);
-    consumeapp.controller("consumeController",["$scope","$mdDialog","$mdMedia","consumeservice","$rootScope","shopservice","$timeout","$filter",
-        function($scope,$mdDialog, $mdMedia,consumeservice,$rootScope,shopservice,$timeout,$filter){
+    consumeapp.controller("consumeController",["$scope","$mdDialog","$mdMedia","consumeservice","$rootScope","shopservice","$timeout","$filter","custominstance","$uibModal",
+        function($scope,$mdDialog, $mdMedia,consumeservice,$rootScope,shopservice,$timeout,$filter,custominstance,$uibModal){
         var _this=$scope;
         $scope.products=[];
         $scope.producttypes=null;
@@ -58,6 +58,32 @@
             extradiscount:0
 
         };
+        $scope.showcustomer=function(customer){
+            custominstance.customno = customer.customno;
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'unail/custom/customsalesinfor.html',
+                controller: 'showCusSalesInforController',
+                bindToController: true,
+                size: "lg",
+                backdrop: false
+            });
+
+            modalInstance.result.then(function(data) {
+                //取数据成功
+                if(data.result > 0) {
+
+
+                } else {
+
+                }
+            }, function(flag) {
+                if(flag.indexOf("back") >= 0) {
+                    return false;
+                }
+            });
+        }
         //应用卡片
         $scope.getcard=function(){
             consumeservice.findCard($scope.searchcard,function(result){
@@ -131,8 +157,6 @@
                         $scope.removeConsumeproduct(successconsume);
                     }
                     resetconsume();
-
-
                 }else{
                     var errors=data.errors;
                     var errtip="";
@@ -153,7 +177,7 @@
             });
         }
         $scope.chooseproduct=function($event){
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && scope.customFullscreen;
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
             $mdDialog.show({
                 parent: angular.element(document.body),
                 controller: function(scope){
@@ -466,13 +490,13 @@
                         var remainprice=_this.price*_this.productcount-_this.dealprice-_this.cash;
                         if(_deal.usediscount){//如果使用折扣
                             if(_deal.discount>0&&_deal.discount<=1) {//含有折扣,折扣为比例
-                                remainprice = Math.round(remainprice * _deal.discount);
+                                remainprice = Math.round(remainprice * _deal.discount*100)/100;
                             }else{//折扣为现金
-                                remainprice = Math.round(remainprice - _deal.discount);
+                                remainprice = Math.round(remainprice - _deal.discount*100)/100;
                             }
                         }else{//取消折扣
                             if(card.cardkind.cardkindrate>0) {
-                                remainprice = Math.round(remainprice /card.cardkind.cardkindrate);
+                                remainprice = Math.round(remainprice /card.cardkind.cardkindrate*100)/100;
                             }
                         }
                         if(remainprice>card.surplussales){//余额不足的情况
@@ -482,7 +506,7 @@
                         }
                         if(_deal.usediscount){//计算卡片抵用价值
                             if(_deal.discount>0&&_deal.discount<=1){//含有折扣,折扣为比例
-                                _deal.dealprice+=Math.round(_deal.surplussales/_deal.discount);
+                                _deal.dealprice+=Math.round(_deal.surplussales/_deal.discount*100)/100;
                             }else{//折扣为现金折扣
                                 _deal.dealprice+=_deal.surplussales+_deal.discount;
                             }
@@ -508,7 +532,7 @@
                                 }else{
                                     _deal.surplustimes=card.surplustimes
                                 }
-                                _deal.dealprice=Math.round(_deal.surplustimes*_this.price);//计算抵扣掉的价格
+                                _deal.dealprice=Math.round(_deal.surplustimes*_this.price*100)/100;//计算抵扣掉的价格
                                 //模拟扣除卡片剩余次数
                                 _this.dealcount+=_deal.surplustimes;
                                 card.surplustimes-=_deal.surplustimes;
@@ -516,7 +540,7 @@
                             }
                         }else{//如果不是次数结算，考虑打折、现金抵用问题
                             if(_deal.discount>0&&_deal.discount<=1){//是折扣
-                                _deal.dealprice=Math.round(_this.price*(1-_deal.discount));
+                                _deal.dealprice=Math.round(_this.price*(1-_deal.discount)*100)/100;
                             }else{
                                 _deal.dealprice=_deal.discount;
                             }
