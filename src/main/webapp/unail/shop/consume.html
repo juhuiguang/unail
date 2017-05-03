@@ -20,7 +20,7 @@
         <div class="panel-heading">选择消费产品</div>
         <div class=" panel list-group">
             <div class="list-group-item" ng-repeat="consumeproduct in consume.consumeproducts">
-                <div style="max-width:80%;">{{consumeproduct.product.productname}}----原价：{{consumeproduct.product.productprice1}}元 | 现价：{{consumeproduct.product.productprice2}}元</div>
+                <div style="max-width:80%;">{{consumeproduct.product.productname}}----原价：{{consumeproduct.product.productprice1|number:1}}元 | 现价：{{consumeproduct.product.productprice2|number:1}}元</div>
                 <div class="btn btn-sm btn-danger" style="position:absolute;right:0.5em;top:0.5em;" ng-click="removeConsumeproduct(consumeproduct)"><span class="fa fa-remove"></span></div>
             </div>
             <div class="list-group-item chooseproduct" >
@@ -68,7 +68,7 @@
                 </div>
                 <div class="list-group-item">
                     <label>卡片余额</label>
-                    <span>{{solocard.surplussales}}元/{{solocard.surplustimes}}次</span>
+                    <span>{{solocard.surplussales|number:1}}元/{{solocard.surplustimes}}次</span>
                 </div>
             </div>
         </div>
@@ -77,18 +77,18 @@
         <div class="panel-heading">结算信息</div>
         <div class="panel-body panel list-group">
             <div class="list-group-item">
-                <label>结算总金额：{{consume.totalprice}} 元</label>
+                <label>结算总金额：{{consume.totalprice|number:1}} 元</label>
             </div>
             <div class="list-group-item">
-                <label>已抵用总金额：{{consume.dealprice}} 元</label>
+                <label>已抵用总金额：{{consume.dealprice|number:1}} 元</label>
             </div>
             <div class="list-group-item">
-                <label>现金支付金额：{{consume.cashprice}} 元</label>
+                <label>现金支付金额：{{consume.cashprice|number:1}} 元</label>
             </div>
 
             <div class="list-group-item">
                 <label>
-                    剩余结算金额：{{consume.totalprice-consume.dealprice-consume.cashprice}} 元<span ng-if="consume.extradiscount>0">（已申请折扣 {{consume.extradiscount}} 元）</span>
+                    剩余结算金额：{{(consume.totalprice-consume.dealprice-consume.cashprice)|number:1}} 元<span ng-if="consume.extradiscount>0">（已申请折扣 {{consume.extradiscount|number:1}} 元）</span>
                     <button class="btn-sm btn-warning btn" ng-if="consume.totalprice-consume.dealprice-consume.cashprice>0&&consume.extradiscount==0" ng-click="getextradiscount()">申请</button>
                     <button class="btn-sm btn-warning btn" ng-if="consume.totalprice-consume.dealprice-consume.cashprice>0&&consume.extradiscount>0" ng-click="cancelextradiscount()">取消</button>
                 </label>
@@ -125,7 +125,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="list-group-item">
-                            <span class=""></span>产品原价：{{consumeproduct.product.productprice1}}元 | 现价：{{consumeproduct.product.productprice2}}元
+                            <span class=""></span>产品原价：{{consumeproduct.product.productprice1|number:1}}元 | 现价：{{consumeproduct.product.productprice2|number:1}}元
                         </div>
                         <div class="list-group-item">
                             <label>服务员工</label>
@@ -179,12 +179,12 @@
                                     <tr ng-repeat="carddeal in consumeproduct.dealcards">
                                         <td>{{carddeal.card.cardno}}</td>
                                         <td>{{carddeal.card.cardkind.cardkindname}}</td>
-                                        <td>{{carddeal.card.surplussales}}元</td>
+                                        <td>{{carddeal.card.surplussales|number:1}}元</td>
                                         <td>
                                             <a ng-if="carddeal.usediscount" ng-click="carddeal.usediscount=false">{{carddeal.discount}}</a>
                                             <a ng-if="!carddeal.usediscount" ng-click="carddeal.usediscount=true">无折扣</a>
                                         </td>
-                                        <td>{{carddeal.surplussales}}元</td>
+                                        <td>{{carddeal.surplussales|number:1}}元</td>
                                         <td>
                                             <button class="btn btn-success" ng-if="!consumeproduct.isusedcard(carddeal.card)" ng-click="consumeproduct.useCard(carddeal)"
                                                     ng-disabled="(consumeproduct.price*consumeproduct.productcount-consumeproduct.dealprice-consumeproduct.cash)==0">
@@ -204,9 +204,9 @@
                     </div>
                     <div class="panel-footer bg-gray-dark">
                         <h4 class="">
-                            项目总金额：{{consumeproduct.price*consumeproduct.productcount}}，
-                            已结算金额：{{consumeproduct.dealprice+consumeproduct.cash}}，
-                            剩余金额：{{consumeproduct.price*consumeproduct.productcount-consumeproduct.dealprice-consumeproduct.cash}}
+                            项目总金额：{{(consumeproduct.price*consumeproduct.productcount)|number:1}}，
+                            已结算金额：{{consumeproduct.dealprice+consumeproduct.cash|number:1}}，
+                            剩余金额：{{(consumeproduct.price*consumeproduct.productcount-consumeproduct.dealprice-consumeproduct.cash)|number:1}}
                         </h4>
 
                     </div>
