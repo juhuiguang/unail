@@ -369,7 +369,7 @@
                 var cardkind=card.cardkind;
                 //判断是否当前门店可用的卡片
                 if(cardkind.cardkinduseshop.indexOf(",")>0){
-                    if(cardkind.cardkinduseshop.indexOf($scope.currentshop.shopNo+",")<0){
+                    if(cardkind.cardkinduseshop.indexOf($scope.currentshop.shopNo+",")<0&&cardkind.cardkinduseshop.indexOf(","+$scope.currentshop.shopNo)<0){
                         return false;
                     }
                 }else{

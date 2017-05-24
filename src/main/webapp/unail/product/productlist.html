@@ -25,7 +25,7 @@
         <label>查找产品:</label>
         <input type="text" placeholder="输入产品名称、价格、拼音首字母查询" ng-change="filterproduct()" class="form-control" ng-model="filtertext"/>
     </div>
-    <div class="col-md-12 typegroup" ng-repeat="type in producttypes" ng-if="filtertext!=null&&filtertext!=''&&hasProduct(type)">
+    <div class="col-md-12 typegroup" ng-repeat="type in producttypes" ng-if="hasProduct(type)">
         <div class="typeheader"><input class="typeitem" type="checkbox" ng-model="type.$isselected" ng-change="typeselect(type)">{{type.name}}</div>
         <ul class="producttypegroup">
             <li ng-repeat="product in resultproducts|filter:{producttype1:type.name}" class="productnameitem">

@@ -185,6 +185,7 @@
     cardapp.controller("addCardController",["$scope","$timeout","$mdSidenav","productService","$rootScope","cardservice","cardkindtype",
         function($scope, $timeout, $mdSidenav,productService,$rootScope,cardservice,cardkindtype){
             $scope.form={};
+            $scope.formsave=false;
         function initaddform() {
             $scope.cardkindtypes = cardkindtype;
             $scope.balancetypes = ["金额结算", "次数结算"];
@@ -222,9 +223,11 @@
         initaddform();
 
         $scope.save=function(){
+            $scope.formsave=true;
             //console.log("save",$scope.form);
             $scope.form.cardkindduetime2=new Date($scope.form.cardkindduetime).getTime();
             cardservice.addCardKind($scope.form,function(result){
+                $scope.formsave=false;
                 console.log("addcardkindresult",result);
                 if($scope.openresult){
                     $scope.openresult.result=result;
@@ -263,6 +266,7 @@
         $scope.ispop=true;//弹出显示标注，可不使用
         $scope.cardkindtypes=cardkindtype;
         $scope.balancetypes = ["金额结算", "次数结算"];
+        $scope.formsave=false;
         var cardkind=cardinstance.cardkind;
 
         cardkind.cardkindduetime=new Date(cardkind.cardkindduetime);
@@ -314,10 +318,12 @@
         }
 
         $scope.save=function(){
+            $scope.formsave=true;
             console.log("date before>>",$scope.form.cardkindduetime);
             $scope.form.cardkindduetime2=new Date($scope.form.cardkindduetime).getTime();
             console.log("date after>>",$scope.form.cardkindduetime)
             cardservice.updateCardKind($scope.form,function(result){
+                $scope.formsave=false;
                 console.log("updatecardkindresult",result);
                 $mdDialog.hide(result);
             });
