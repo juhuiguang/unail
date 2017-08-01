@@ -15,6 +15,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
    <meta name="description" content="">
    <meta name="keywords" content="unail alienlab">
+   <meta http-equiv="pragma" content="no-cache">
+   <meta http-equiv="cache-control" content="no-cache">
    <title>UNAIL运行管理平台</title>
    <!-- Bootstrap styles-->
    <link rel="stylesheet" href="app/css/bootstrap.css">
