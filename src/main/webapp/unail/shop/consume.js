@@ -295,34 +295,37 @@
             var printContents = "";
             printContents+="<p>"+$filter("date")(new Date(),"yyyy-MM-dd HH:mm:ss")+"</p>";
             printContents+="<p>客户 "+printdata.custom.customname+" 共消费"+printdata.consumeproducts.length+"个项目</p>";
-
-            printContents+="<ul>";
+            printContents+="<hr style='width:100%;' />";
+            printContents+="<ul style='list-style:none;padding:0;margin:0;'>";
             for(var i=0;printdata.consumeproducts&&i<printdata.consumeproducts.length;i++){
                 var citem=printdata.consumeproducts[i];
                 printContents+="<li>";
-                printContents+="<p>"+citem.product.productname+"元,价格："+citem.price+"元</p>";
+                printContents+="<p>"+citem.product.productname+",价格："+citem.price+"元</p>";
                 printContents+="<p>卡券共抵用："+citem.dealprice+"元,</p><p>现金或刷卡："+citem.price+"元，</p><p>额外折扣："+citem.extradiscount+"元</p>";
 
                 if(citem.dealcards&&citem.dealcards.length>0){
                     printContents+="<p>卡券抵用明细：</p>";
                     for(var j=0;j<citem.dealcards.length;j++){
                         var cditem=citem.dealcards[j];
-                        printContents+="<p>卡号："+cditem.card.cardno+"</p>";
-                        printContents+="<p>卡片种类："+cditem.card.cardkind.cardkindname+"</p>";
-                        printContents+="<p>结算方式："+cditem.card.cardkind.balancetype+"</p>";
-                        printContents+="<p>结算折扣："+cditem.discount+"</p>";
-                        printContents+="<p>结算额度："+cditem.surplussales+"</p>";
+                        if(cditem.surplussales>0){
+                            printContents+="<p>卡号："+cditem.card.cardno+"</p>";
+                            printContents+="<p>卡片种类："+cditem.card.cardkind.cardkindname+"</p>";
+                            printContents+="<p>结算方式："+cditem.card.cardkind.balancetype+"</p>";
+                            printContents+="<p>结算折扣："+cditem.discount+"</p>";
+                            printContents+="<p>结算额度："+cditem.surplussales+"</p>";
+                        }
+
                     }
                 }
                 printContents+="<hr style='width:100%;' />";
                 printContents+="</li>";
             }
             printContents+="</ul>";
-            printContents+="<p><h3>总消费：<strong>"+printdata.totalprice+" 元</strong></h3>，</p><p><h3>卡片抵用：<strong>"+printdata.dealprice+"元</strong></h3>，</p><p><h3>现金或刷卡：<strong>"+printdata.cashprice+"元</strong></h3></p>";
+            printContents+="<p>总消费：<strong>"+printdata.totalprice+" 元</strong>，</p><p>卡片抵用：<strong>"+printdata.dealprice+"元</strong>，</p><p>现金或刷卡：<strong>"+printdata.cashprice+"元</strong></p>";
             printContents+="<p>"+$filter("date")(new Date(),"yyyy-MM-dd HH:mm:ss")+"</p>";
             var popupWin = window.open('', '_blank', 'width=190,height=570');
             popupWin.document.open();
-            popupWin.document.write('<html><head><title>结算打印</title></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.write('<html><head><title>结算打印</title></head><body onload="window.print()" style="font-size:90%;">' + printContents + '</body></html>');
             popupWin.document.close();
         }
 
