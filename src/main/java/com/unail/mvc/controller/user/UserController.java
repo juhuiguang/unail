@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alienlab.utils.Azdg;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,7 +67,10 @@ public class UserController {
 			JSONObject form = JSONObject.parseObject(jsonBody);
 			User user = new User();
 			user.setLoginname(form.getString("loginname"));
-			user.setPassword(form.getString("password"));
+			String pwd=form.getString("password");
+			Azdg a=new Azdg();
+			String password= a.encrypt(pwd);
+			user.setPassword(password);
 			user.setUsername(form.getString("username"));
 			Date now = new Date();
 			user.setCreatetime(now);
@@ -97,7 +101,10 @@ public class UserController {
 			User user = new User();
 			user.setUserid(form.getLong("userid"));
 			user.setLoginname(form.getString("loginname"));
-			user.setPassword(form.getString("password"));
+			String pwd=form.getString("password");
+			Azdg a=new Azdg();
+			String password= a.encrypt(pwd);
+			user.setPassword(password);
 			user.setUsername(form.getString("username"));
 			user.setCreatetime(TypeUtils.str2date(form.getString("createtime"), "yyyy-MM-dd hh:mm:ss"));
 			user.setLastlogin(TypeUtils.str2date(form.getString("lastlogin"), "yyyy-MM-dd hh:mm:ss"));

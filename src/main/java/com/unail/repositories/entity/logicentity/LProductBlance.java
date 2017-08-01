@@ -73,6 +73,9 @@ public class LProductBlance {
     @Column(name = "product_type1", nullable = true)
     private String productType;
 
+    @Column(name = "staff_name", nullable = true)
+    private String staffName;
+
     public String getProductType() {
         return productType;
     }
@@ -219,5 +222,13 @@ public class LProductBlance {
 
     public void setProduct_total(Float product_total) {
         this.product_total = product_total;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 }

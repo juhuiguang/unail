@@ -29,7 +29,12 @@ public class StaffController {
 	
 	@RequestMapping(value="/staff/shopstaffs/{shop}",method=RequestMethod.GET)
 	public String  getstaffs(@PathVariable String shop) {
-		return JSON.toJSONString(service.getstaffs(Long.parseLong(shop)));
+		if(shop.equalsIgnoreCase("all")){
+			return JSON.toJSONString(service.getstaffs(0L));
+		}else{
+			return JSON.toJSONString(service.getstaffs(Long.parseLong(shop)));
+		}
+
 	}
 	
 	@RequestMapping(value="/staff/delete/{staffid}",method=RequestMethod.DELETE)

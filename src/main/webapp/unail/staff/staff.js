@@ -17,17 +17,37 @@
 		
 		if($rootScope.user.purview == "ALL") {
 			$scope.purview = true;
-			$scope.clickShopItem = function clickShopItem(shopitem) {
-				console.log(shopitem);     
-				$scope.currentshop = shopitem.shopNo;
-			}
+
 		} else {
 			$scope.purview = false;
 			$scope.currentshop = $rootScope.user.purview;
 		}
+        $scope.clickShopItem = function clickShopItem(shopitem) {
+            console.log(shopitem);
+            $scope.currentshop = shopitem.shopNo;
+
+            staffservice.getstaffs(function(data){
+                console.log("staff",data);
+                if(data == "" || data == null) {
+
+                } else {
+                    for(var i=0; i<data.length; i++) {
+                        if(data[i].staffstate == "0") {
+                            data[i].staffstate = "正常";
+                        } else if(data[i].staffstate == "1") {
+                            data[i].staffstate = "异常";
+                        }
+                        data[i].staffentrytime = new Date(parseInt(data[i].staffentrytime));
+                    }
+
+                    $scope.staffs = data;
+
+                }
+            },shopitem.shopNo);
+
+        }
 		
-		
-		shopservice.getshops("all",function(data){    
+		shopservice.getshops("all",function(data){
     		console.log(data);
     		if(data == "" || data == null) {      
     			
@@ -53,7 +73,7 @@
 				$scope.staffs = data;
 				
 			}
-		});
+		},"all");
 		
 		$scope.addstaff = function addstaff() {
 			var modalInstance = $uibModal.open({

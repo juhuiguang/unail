@@ -90,7 +90,10 @@ public class CustomService {
 	
 	public List<LProductBlance> getCusMoneyInfor(String key) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT a.*,b.`product_type1` FROM product_balance a,product_info b WHERE a.`consume_pro_no`=b.`product_no` AND custom_no='"+key+"' ORDER BY consume_time DESC";
+		String sql = "SELECT a.*,b.`product_type1`,c.`staff_name` FROM product_balance a " +
+						"LEFT JOIN product_info b ON a.`consume_pro_no`=b.`product_no` " +
+						"LEFT JOIN staff c ON c.`staff_no`=a.`staff` " +
+						"WHERE  custom_no='"+key+"' ORDER BY consume_time DESC ";
 		SqlService s=new SqlService();
 		List list=s.selectResult(sql,null);
 		return DAO.list2T(list,LProductBlance.class);

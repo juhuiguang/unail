@@ -25,9 +25,15 @@ public class StaffService {
 	}
 
 	public List<Staff> getstaffs(Long shopid) {
-		// TODO Auto-generated method stub
-		List<Staff> result =repository.findStaffsByStaffshop(shopid);
-		return result;
+		if(shopid>0){
+			// TODO Auto-generated method stub
+			List<Staff> result =repository.findStaffsByStaffshop(shopid);
+			return result;
+		}else{
+			List<Staff> result=repository.findAll();
+			return result;
+		}
+
 	}
 	public boolean deletestaff(Long id) {
 		// TODO Auto-generated method stub
