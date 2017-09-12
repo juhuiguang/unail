@@ -118,8 +118,8 @@ public class CardService {
         }
     }
 
-    public Page<Card> getCards(Long cardkindno,int pageIndex,int pageSize){
-        return cardRepository.findCardsByCardkind(cardKindRepository.findOne(cardkindno),new PageRequest(pageIndex - 1, pageSize, new Sort(Sort.Direction.ASC, "cardno")));
+    public Page<Card> getCards(Long cardkindno,String keyword,int pageIndex,int pageSize){
+        return cardRepository.findCardsByQuery(cardKindRepository.findOne(cardkindno),keyword,new PageRequest(pageIndex , pageSize, new Sort(Sort.Direction.ASC, "cardno")));
     }
 
     public List<Card> loadCustomCards(Long cusno){

@@ -574,6 +574,8 @@
 				});
 			}
 		}
+
+
 		
 	});
 
@@ -581,7 +583,8 @@
 		return {
 			restrict: 'EA', //E = element, A = attribute, C = class, M = comment
 			scope: {
-				selectcustom:"="
+				selectcustom:"=",
+				onselect:"&onselect"
 			},
 			templateUrl: 'unail/custom/customselect.html',
 			link: function (scope, element, attr, ctrl) {
@@ -610,6 +613,9 @@
 							},
 							selectedItemChange:function(item){
 								scope.selectcustom=item;
+								if(scope.onselect!=null&&item!=null){
+									scope.onselect({item:item});
+								}
 							},
 							querySearch:function(query){
 								var results = query ? scope.customs.filter( createFilterFor(query) ) : scope.customs;

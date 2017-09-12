@@ -295,7 +295,9 @@ public class CardController {
             Long cardkindno=params.getLong("cardkindno");
             int pageIndex=params.getInteger("pageindex");
             int pageSize=params.getInteger("pagesize");
-            Page<Card> cards=cardService.getCards(cardkindno,pageIndex,pageSize);
+            String keyword=params.getString("keyword");
+            if(keyword==null) keyword="";
+            Page<Card> cards=cardService.getCards(cardkindno,keyword,pageIndex,pageSize);
             ExecResult er=new ExecResult();
             er.setResult(true);
             er.setData((JSON)JSON.toJSON(cards));
@@ -542,5 +544,33 @@ public class CardController {
     		e.printStackTrace();
     		return new ExecResult(false,"此卡片修改状态过程中发生异常").toString();
     	}
+    }
+
+    @RequestMapping(value="/card/bindcard")
+    public String bindCard(HttpServletRequest request){
+        try{
+            String jsonBody = IOUtils.toString(request.getInputStream(), "UTF-8");
+            JSONObject params = JSONObject.parseObject(jsonBody);
+            String cardno=params.getString("cardno");
+            Long customId=params.getLong("customId");
+            Card c=cardRepository.findCardByCardno(cardno);
+            if(c!=null){
+                Custom cus=customRepository.findOne(customId);
+                c.setCustom(cus);
+                c=cardRepository.save(c);
+                ExecResult er=new ExecResult();
+                er.setResult(true);
+                er.setData((JSON) JSONObject.toJSON(c));
+                return er.toString();
+            }else{
+                return new ExecResult(false,"查询不到卡片信息").toString();
+            }
+
+
+        }catch(Exception e) {
+            e.printStackTrace();
+            return new ExecResult(false,"此卡片绑定用户过程中发生异常").toString();
+        }
+
     }
 }

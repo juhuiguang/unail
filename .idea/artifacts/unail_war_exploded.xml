@@ -8,12 +8,12 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.2.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.2.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.2.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.2.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-web:4.2.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.2.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.2.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.2.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.2.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:4.2.9.RELEASE" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.20" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.16" />
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.1.35" />

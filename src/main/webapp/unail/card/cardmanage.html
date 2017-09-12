@@ -16,7 +16,9 @@
             </span>
             删除卡片
         </button>
-        <input class="form-control " type="text" placeholder="输入卡号查询" ng-model="srchcardno" style="width:30%;float:right;"/>
+        <i class="fa fa-search" ng-click="loadCards(srchkeyword,0,10)" style="float: right;font-size: 24px;margin-left: 1rem;"></i>
+        <input class="form-control " type="text" placeholder="输入卡号查询" ng-model="srchkeyword" style="width:30%;float:right;"/>
+
         <div style="clear:both;"></div>
     </div>
     <div style="clear:both;"></div>
@@ -35,13 +37,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="card in cards|filter:{cardno:srchcardno}">
+                <tr ng-repeat="card in cards">
                     <td>
                         <input type="checkbox" ng-model="card.$isselected" />
                     </td>
                     <td>{{ card.cardno }}</td>
                     <td data-ng-if="card.custom!=null">{{ card.custom.customname }}</td>
-                    <td data-ng-if="card.custom==null"><button class="btn btn-sm btn-default">选择用户</button></td>
+                    <td data-ng-if="card.custom==null">
+                        <select-custom selectcustom="card.custom" onselect="cardselectcustom(card,item)"></select-custom>
+                    </td>
                     <td>{{ card.surplussales }}</td>
                     <td>{{ card.surplustimes }}</td>
                     <td>{{ card.lastconsumetime }}</td>
@@ -53,6 +57,24 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div>
+        <ul class="pagination ng-table-pagination">
+            <li ng-class="{'disabled': listData.first}">
+                <!-- ngSwitchWhen: prev -->
+                <a ng-click="loadCards(srchkeyword,listData.number-1,listData.numberOfElements)" href="" class="ng-scope">«</a>
+                <!-- end ngSwitchWhen: --> <!-- ngSwitchWhen: first --> <!-- ngSwitchWhen: page --> <!-- ngSwitchWhen: more --> <!-- ngSwitchWhen: last --> <!-- ngSwitchWhen: next -->
+            </li><!-- end ngRepeat: page in pages -->
+            <li class="ng-scope active">
+                <a href="" class="ng-scope">第{{listData.number+1}}页/共{{listData.totalPages}}页</a>
+            </li><!-- end ngRepeat: page in pages -->
+
+            <li ng-class="{'disabled': listData.last}" class="ng-scope">
+                <!-- ngSwitchWhen: prev --> <!-- ngSwitchWhen: first --> <!-- ngSwitchWhen: page --> <!-- ngSwitchWhen: more --> <!-- ngSwitchWhen: last --> <!-- ngSwitchWhen: next -->
+                <a ng-click="loadCards(srchkeyword,listData.number+1,listData.numberOfElements)" href="" class="ng-scope">»
+                </a><!-- end ngSwitchWhen: -->
+            </li><!-- end ngRepeat: page in pages -->
+        </ul>
     </div>
 </md-dialog-content>
 </md-dialog>

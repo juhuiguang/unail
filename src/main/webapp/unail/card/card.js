@@ -336,10 +336,40 @@
         function($scope, $timeout,$mdToast,cardinstance,cardservice,$mdDialog,$uibModal){  
         $scope.modal={};
         $scope.modal.cardkind=cardinstance.cardkind;
+        $scope.modal.index=0;
+        $scope.modal.size=10;
 
-        cardservice.getCards($scope.modal.cardkind.cardkindno,1,10,function(data){
-            $scope.cards=data.data.content;
-        });
+
+        loadCards("",$scope.modal.index,$scope.modal.size);
+
+        $scope.cardselectcustom=function(card,custom){
+            console.log("cardselectcustom",card,custom);
+            cardservice.bindCard(card.cardno,custom.customno,function(data){
+                if(data.result>0){
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent("客户绑定成功。")
+                            .hideDelay(1000));
+                }else{
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent(result.errormsg)
+                            .hideDelay(1000));
+                }
+            });
+        }
+
+        $scope.loadCards=loadCards;
+
+        function loadCards(keyword,index,size){
+            cardservice.getCards($scope.modal.cardkind.cardkindno,keyword,index,size,function(data){
+                $scope.cards=data.data.content;
+                $scope.modal.index=data.data.number;
+                $scope.listData=data.data;
+            });
+        }
+
+
 
         $scope.selectall = function selectall(){
         	for(var i=0; i<$scope.cards.length; i++) {
@@ -728,14 +758,15 @@
             });
         }
         //获取某卡种下的卡片
-        this.getCards=function(cardkindno,pageindex,pagesize,callback){
+        this.getCards=function(cardkindno,keyword,pageindex,pagesize,callback){
             $http({
                 url:'card/cards',
                 method:'POST',
                 data:{
                     cardkindno:cardkindno,
                     pageindex:pageindex,
-                    pagesize:pagesize
+                    pagesize:pagesize,
+                    keyword:keyword
                 }
             }).then(function(data){
                 console.log("getcards>>>>",data);
@@ -801,6 +832,19 @@
             	});
         	}
         	
+        }
+
+        this.bindCard=function(cardno,cusid,callback){
+            $http({
+                url:'card/bindcard',
+                method:"POST",
+                data:{
+                    cardno:cardno,
+                    customId:cusid
+                }
+            }).then(function(response) {
+                callback(response.data);
+            });
         }
         
     }]);
