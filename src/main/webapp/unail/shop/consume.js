@@ -325,7 +325,7 @@
             printContents+="<p>"+$filter("date")(new Date(),"yyyy-MM-dd HH:mm:ss")+"</p>";
             var popupWin = window.open('', '_blank', 'width=190,height=570');
             popupWin.document.open();
-            popupWin.document.write('<html><head><title>结算打印</title></head><body onload="window.print()" style="font-size:90%;">' + printContents + '</body></html>');
+            popupWin.document.write('<html><head><title>结算打印</title></head><body onload="window.print()" style="font-size:90%;width:100%;height:auto;">' + printContents + '</body></html>');
             popupWin.document.close();
         }
 
@@ -443,7 +443,7 @@
                 //获得对应产品的折扣
                 for(var i=0;i<card.cardkind.products.length;i++){
                     if(card.cardkind.products[i].productno==_this.product.productno){
-                        if($scope.currentshop.shopName.indexOf("德基")>=0){
+                        if($scope.currentshop.shopName.indexOf("德基")>=0 && (card.cardkind.cardkindname.indexOf("3000")||card.cardkind.cardkindname.indexOf("5000")||card.cardkind.cardkindname.indexOf("10000"))){
                             var discount=card.cardkind.products[i].servediscount;
                             if(discount>0&&discount<0.9){
                                 discount+=0.1;
